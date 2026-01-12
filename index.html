@@ -1,46 +1,86 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ushoo | Animation Portfolio</title>
+    <title>USHOO | Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #050505; color: #ffffff; font-family: sans-serif; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+        body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .work-card { transition: transform 0.3s ease; }
+        .work-card:hover { transform: translateY(-5px); }
     </style>
 </head>
 <body>
-    <nav class="p-8 flex justify-between items-center uppercase tracking-tighter">
-        <a href="/" class="text-2xl font-black">USHOO.ART</a>
-        <div class="space-x-8 text-sm font-light">
-            <a href="#work" class="hover:line-through">Work</a>
-            <a href="mailto:your-email@example.com" class="hover:line-through">Contact</a>
+    <nav class="p-8 flex justify-between items-center uppercase tracking-widest">
+        <a href="/" class="text-2xl font-bold">USHOO.ART</a>
+        <div class="space-x-6 text-sm font-light">
+            <a href="#work" class="hover:text-zinc-400">Works</a>
+            <a href="mailto:your-email@example.com" class="hover:text-zinc-400">Contact</a>
         </div>
     </nav>
 
-    <section class="px-8 mb-20">
-        <div class="video-container bg-zinc-900 rounded-lg">
+    <section class="px-8 mb-16">
+        <div class="video-container bg-zinc-900 mb-6">
             <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
         </div>
-        <div class="mt-6">
-            <h2 class="text-4xl font-bold italic">DEMO REEL 2026</h2>
-            <p class="text-zinc-500 mt-2">Motion Design & Direction</p>
+        <h2 class="text-4xl font-bold italic">DEMO REEL 2026</h2>
+        <p class="text-zinc-500 mt-2">Animation Direction & Storytelling</p>
+    </section>
+
+    <section id="work" class="px-8 pb-20">
+        <h3 class="text-xl mb-8 border-b border-zinc-800 pb-4 text-zinc-400">SELECTED PROJECTS</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <div class="work-card">
+                <div class="aspect-video bg-zinc-800 rounded-lg mb-4 overflow-hidden">
+                    <img src="https://via.placeholder.com/800x450" alt="2D Project 1" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-xl font-medium">2D Animation Project A</h4>
+                <p class="text-zinc-500 text-sm">Traditional Frame-by-Frame</p>
+            </div>
+
+            <div class="work-card">
+                <div class="aspect-video bg-zinc-800 rounded-lg mb-4 overflow-hidden">
+                    <img src="https://via.placeholder.com/800x450" alt="2D Project 2" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-xl font-medium">2D Animation Project B</h4>
+                <p class="text-zinc-500 text-sm">Character Performance</p>
+            </div>
+
+            <div class="work-card">
+                <div class="aspect-video bg-zinc-800 rounded-lg mb-4 overflow-hidden">
+                    <img src="https://via.placeholder.com/800x450" alt="3D Project" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-xl font-medium">3D Environment Build</h4>
+                <p class="text-zinc-500 text-sm">Maya & Unreal Engine</p>
+            </div>
+
+            <div class="work-card">
+                <div class="aspect-video bg-zinc-800 rounded-lg mb-4 overflow-hidden">
+                    <img src="https://via.placeholder.com/800x450" alt="Stop Motion" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-xl font-medium">Stop Motion Experiment</h4>
+                <p class="text-zinc-500 text-sm">Clay & Mixed Media</p>
+            </div>
+
+            <div class="work-card md:col-span-2">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="aspect-square bg-zinc-800 rounded italic text-xs p-2 text-zinc-600">Painting 1</div>
+                    <div class="aspect-square bg-zinc-800 rounded italic text-xs p-2 text-zinc-600">Painting 2</div>
+                    <div class="aspect-square bg-zinc-800 rounded italic text-xs p-2 text-zinc-600">Painting 3</div>
+                </div>
+                <h4 class="text-xl font-medium mt-4">Illustration & Concept Art</h4>
+                <p class="text-zinc-500 text-sm">Digital & Physical Gallery</p>
+            </div>
+
         </div>
     </section>
 
-    <section id="work" class="px-8 grid grid-cols-1 md:grid-cols-2 gap-12 pb-20">
-        <div class="group">
-            <div class="aspect-video bg-zinc-800 rounded mb-4"></div>
-            <h3 class="text-xl font-medium underline decoration-zinc-700">Project Alpha</h3>
-            <p class="text-zinc-500 text-sm">3D Animation</p>
-        </div>
-        <div class="group">
-            <div class="aspect-video bg-zinc-800 rounded mb-4"></div>
-            <h3 class="text-xl font-medium underline decoration-zinc-700">Project Beta</h3>
-            <p class="text-zinc-500 text-sm">Visual Effects</p>
-        </div>
-    </section>
+    <footer class="p-8 text-center text-zinc-600 text-xs border-t border-zinc-900">
+        &copy; 2026 USHOO. All Rights Reserved.
+    </footer>
 </body>
 </html>
