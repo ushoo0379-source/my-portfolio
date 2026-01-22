@@ -7,41 +7,84 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
+        /* 这里的返回按钮动画 */
+        .back-link { transition: all 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body>
+
     <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
         <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
-        <a href="../index.html" class="text-[10px] font-bold hover:text-zinc-400">← Back to Works</a>
+        <a href="../index.html" class="back-link text-[10px] font-bold hover:text-zinc-400 transition-colors">
+            ← Back to Works
+        </a>
     </nav>
 
-    <main class="px-8 max-w-5xl mx-auto py-20">
-        <div class="aspect-video bg-zinc-900 rounded-lg mb-12 overflow-hidden">
-            <img src="https://via.placeholder.com/1920x1080?text=RECURSION+FULL+VIEW" class="w-full h-full object-cover">
+    <main class="px-8 max-w-6xl mx-auto py-12">
+        
+        <header class="mb-12">
+            <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4">RECURSION</h1>
+            <div class="flex gap-4">
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">Environment Design</span>
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">2026 Project</span>
+            </div>
+        </header>
+
+        <div class="aspect-video bg-zinc-900 rounded-lg mb-12 overflow-hidden shadow-2xl">
+            <img src="https://via.placeholder.com/1920x1080?text=RECURSION+HERO+IMAGE" class="w-full h-full object-cover" alt="Recursion Main View">
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24">
             <div class="md:col-span-2">
-                <h1 class="text-5xl font-black italic uppercase tracking-tighter mb-6">RECURSION</h1>
-                <p class="text-zinc-400 leading-relaxed text-lg">
-                    在这里写关于这个项目的描述。例如：本项目探索了数字生命与自然循环的关系。
-                    我主要负责了环境建模和后期合成。
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-6">About the Project</h3>
+                <p class="text-zinc-300 leading-relaxed text-lg mb-6">
+                    这里是你的项目介绍。例如：“RECURSION 是一项探索数字与自然之间界限的视觉实验。
+                    在 SVA MFA 期间，我试图通过 C4D 的克隆工具展示生命循环的无限性。”
+                </p>
+                <p class="text-zinc-500 leading-relaxed">
+                    你可以详细说明你的创作灵感、遇到的挑战以及你最终是如何解决这些问题的。
+                    对于招聘官来说，看到你的思考过程（Process）和最终成品一样重要。
                 </p>
             </div>
             
-            <div class="border-l border-zinc-900 pl-8">
-                <h4 class="text-[10px] text-zinc-500 uppercase tracking-widest mb-4">Software Used</h4>
-                <ul class="text-sm space-y-2 text-zinc-300">
-                    <li>Cinema 4D / Octane</li>
-                    <li>After Effects</li>
-                    <li>ZBrush</li>
-                </ul>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Software</h3>
+                    <ul class="text-sm space-y-2 text-zinc-400 font-medium">
+                        <li>Cinema 4D</li>
+                        <li>Octane Render</li>
+                        <li>After Effects</li>
+                        <li>Adobe Premiere</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Credits</h3>
+                    <p class="text-sm text-zinc-400">Direction: USHOO<br>Sound Design: Your Friend Name</p>
+                </div>
             </div>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+            <div class="aspect-square bg-zinc-900 rounded-lg overflow-hidden">
+                <img src="https://via.placeholder.com/800x800?text=Process+01" class="w-full h-full object-cover">
+            </div>
+            <div class="aspect-square bg-zinc-900 rounded-lg overflow-hidden">
+                <img src="https://via.placeholder.com/800x800?text=Process+02" class="w-full h-full object-cover">
+            </div>
+        </div>
+
     </main>
 
     <footer class="p-20 text-center border-t border-zinc-900">
-        <p class="text-zinc-800 text-[10px] uppercase tracking-widest">&copy; 2026 USHOO STUDIO</p>
+        <a href="../index.html" class="text-zinc-500 hover:text-white transition-colors uppercase tracking-[0.5em] text-[10px]">Back to Home</a>
+        <p class="text-zinc-800 text-[10px] mt-8 uppercase tracking-widest">&copy; 2026 USHOO STUDIO</p>
     </footer>
+
 </body>
 </html>
