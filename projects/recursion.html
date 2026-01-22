@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RECURSION | USHOO</title>
+    <title>RECURSION | USHOO.ART</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
-        /* 这里的返回按钮动画 */
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #141414; border-radius: 8px; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
         .back-link { transition: all 0.3s ease; }
         .back-link:hover { transform: translateX(-5px); }
-        
-        /* 自定义滚动条 */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -21,69 +20,80 @@
 
     <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
         <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
-        <a href="../index.html" class="back-link text-[10px] font-bold hover:text-zinc-400 transition-colors">
-            ← Back to Works
-        </a>
+        <a href="../index.html" class="back-link text-[10px] font-bold hover:text-zinc-400">← Back to Works</a>
     </nav>
 
     <main class="px-8 max-w-6xl mx-auto py-12">
         
         <header class="mb-12">
             <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4">RECURSION</h1>
-            <div class="flex gap-4">
-                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">Environment Design</span>
-                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">2026 Project</span>
+            <div class="flex gap-4 mb-8">
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">Animation Showreel</span>
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">2026</span>
             </div>
+            
+            <div class="video-wrapper shadow-[0_0_100px_rgba(0,0,0,0.8)]">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+            </div>
+            <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-[0.2em]">Primary Showcase: 2:00 Animation Highlight Reel</p>
         </header>
 
-        <div class="aspect-video bg-zinc-900 rounded-lg mb-12 overflow-hidden shadow-2xl">
-            <img src="https://via.placeholder.com/1920x1080?text=RECURSION+HERO+IMAGE" class="w-full h-full object-cover" alt="Recursion Main View">
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-24">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-t border-zinc-900">
             <div class="md:col-span-2">
-                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-6">About the Project</h3>
-                <p class="text-zinc-300 leading-relaxed text-lg mb-6">
-                    这里是你的项目介绍。例如：“RECURSION 是一项探索数字与自然之间界限的视觉实验。
-                    在 SVA MFA 期间，我试图通过 C4D 的克隆工具展示生命循环的无限性。”
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8">Project Narrative</h3>
+                <p class="text-zinc-200 leading-relaxed text-xl mb-6">
+                    "RECURSION" explores the boundaries between digital reincarnation and organic memory. 
+                    This project was a deep dive into complex environment building and cinematic storytelling.
                 </p>
                 <p class="text-zinc-500 leading-relaxed">
-                    你可以详细说明你的创作灵感、遇到的挑战以及你最终是如何解决这些问题的。
-                    对于招聘官来说，看到你的思考过程（Process）和最终成品一样重要。
+                    The film follows a 10-minute non-linear narrative, challenging the audience to piece together 
+                    a world where data and nature converge. For this showcase, I've highlighted the most 
+                    visually demanding sequences produced during my time at SVA.
                 </p>
             </div>
             
-            <div class="space-y-8">
+            <div class="space-y-10">
                 <div>
-                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Software</h3>
-                    <ul class="text-sm space-y-2 text-zinc-400 font-medium">
-                        <li>Cinema 4D</li>
-                        <li>Octane Render</li>
-                        <li>After Effects</li>
-                        <li>Adobe Premiere</li>
+                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Core Competencies</h3>
+                    <ul class="text-sm space-y-2 text-zinc-400 font-mono">
+                        <li>Environment Design</li>
+                        <li>Character Animation</li>
+                        <li>Sound Engineering</li>
+                        <li>Octane Rendering</li>
                     </ul>
-                </div>
-                <div>
-                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Credits</h3>
-                    <p class="text-sm text-zinc-400">Direction: USHOO<br>Sound Design: Your Friend Name</p>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-            <div class="aspect-square bg-zinc-900 rounded-lg overflow-hidden">
-                <img src="https://via.placeholder.com/800x800?text=Process+01" class="w-full h-full object-cover">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 py-20 border-t border-zinc-900 items-center">
+            <div>
+                <h3 class="text-white uppercase tracking-[0.3em] text-[10px] mb-6">Sound Design Spotlight</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+                    A 1.5-minute specialized cut focusing on the foley and atmospheric scoring. 
+                    I designed the soundscape to reflect the mechanical yet ethereal nature of the world, 
+                    using a mix of synthesized textures and organic field recordings.
+                </p>
+                <span class="text-zinc-600 font-mono text-[10px]">Technical Focus: Audio-Visual Synchronization</span>
             </div>
-            <div class="aspect-square bg-zinc-900 rounded-lg overflow-hidden">
-                <img src="https://via.placeholder.com/800x800?text=Process+02" class="w-full h-full object-cover">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
             </div>
+        </div>
+
+        <div class="bg-zinc-950 p-16 rounded-2xl text-center border border-zinc-900 mb-20">
+            <h4 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-6">Long-form Storytelling</h4>
+            <h2 class="text-3xl font-bold mb-10 italic uppercase tracking-tighter">Experience the Full 10-Minute Film</h2>
+            <a href="https://vimeo.com/your-full-video-link" target="_blank" 
+               class="inline-block px-10 py-4 bg-white text-black font-bold uppercase tracking-widest text-[10px] hover:bg-zinc-300 transition-all">
+                Watch Full Film (English Subtitles)
+            </a>
+            <p class="mt-6 text-[9px] text-zinc-700 uppercase tracking-widest italic">Highly recommended for Narrative Review</p>
         </div>
 
     </main>
 
     <footer class="p-20 text-center border-t border-zinc-900">
-        <a href="../index.html" class="text-zinc-500 hover:text-white transition-colors uppercase tracking-[0.5em] text-[10px]">Back to Home</a>
-        <p class="text-zinc-800 text-[10px] mt-8 uppercase tracking-widest">&copy; 2026 USHOO STUDIO</p>
+        <p class="text-zinc-800 text-[10px] uppercase tracking-widest">&copy; 2026 USHOO STUDIO</p>
     </footer>
 
 </body>
