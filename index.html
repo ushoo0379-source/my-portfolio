@@ -9,8 +9,22 @@
         body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; scroll-behavior: smooth; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #141414; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .work-card { transition: all 0.4s ease; }
-        .work-card:hover { transform: translateY(-5px); filter: brightness(1.1); }
+        
+        /* 优化后的卡片动画 */
+        .work-card { 
+            display: block; /* 确保 a 标签撑满容器 */
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); 
+            text-decoration: none;
+        }
+        .work-card:hover { 
+            transform: translateY(-10px); 
+            filter: brightness(1.2); 
+        }
+        .work-card:active {
+            transform: translateY(-2px);
+            transition: all 0.1s;
+        }
+
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
@@ -39,50 +53,50 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
             
-            <div class="work-card md:col-span-2">
+            <a href="projects/recursion.html" class="work-card md:col-span-2">
                 <div class="aspect-video bg-zinc-900 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/1920x1080?text=RECURSION+MAIN+IMAGE" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/1920x1080?text=RECURSION+MAIN+IMAGE" class="w-full h-full object-cover" alt="Recursion">
                 </div>
                 <div class="flex justify-between items-end">
                     <div>
-                        <h4 class="text-3xl font-black italic uppercase tracking-tighter">RECURSION</h4>
+                        <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">RECURSION</h4>
                         <p class="text-zinc-500 text-sm mt-2">Environment Design | 2D & 3D Assist</p>
                     </div>
-                    <span class="text-zinc-800 font-mono text-xs">Featured</span>
+                    <span class="text-zinc-800 font-mono text-xs">Featured / Click to view</span>
                 </div>
-            </div>
+            </a>
 
-            <div class="work-card">
+            <a href="projects/modeling.html" class="work-card">
                 <div class="aspect-square bg-zinc-900 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/800x800?text=3D+Modeling" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/800x800?text=3D+Modeling" class="w-full h-full object-cover" alt="3D Modeling">
                 </div>
-                <h4 class="text-xl font-bold uppercase italic">3D Modeling & Texturing</h4>
+                <h4 class="text-xl font-bold uppercase italic text-white">3D Modeling & Texturing</h4>
                 <p class="text-zinc-500 text-xs mt-2 uppercase tracking-widest">Lighting Study | Octane & C4D</p>
-            </div>
+            </a>
 
-            <div class="work-card">
+            <a href="projects/bicycle.html" class="work-card">
                 <div class="aspect-square bg-zinc-900 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/800x800?text=Bicycle+Touring" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/800x800?text=Bicycle+Touring" class="w-full h-full object-cover" alt="Bicycle Touring">
                 </div>
-                <h4 class="text-xl font-bold uppercase italic">Bicycle Touring</h4>
+                <h4 class="text-xl font-bold uppercase italic text-white">Bicycle Touring</h4>
                 <p class="text-zinc-500 text-xs mt-2 uppercase tracking-widest">2D Animation | 1:00 Minute Short</p>
-            </div>
+            </a>
 
-            <div class="work-card">
+            <a href="projects/blooming.html" class="work-card">
                 <div class="aspect-[4/3] bg-zinc-900 rounded-lg mb-6 overflow-hidden border border-zinc-900">
-                    <img src="https://via.placeholder.com/800x600?text=Blooming+Engine" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/800x600?text=Blooming+Engine" class="w-full h-full object-cover" alt="Blooming Engine">
                 </div>
-                <h4 class="text-xl font-bold uppercase italic">Blooming Engine</h4>
+                <h4 class="text-xl font-bold uppercase italic text-white">Blooming Engine</h4>
                 <p class="text-zinc-500 text-xs mt-2 uppercase tracking-widest">Interactive Website | Creative Coding</p>
-            </div>
+            </a>
 
-            <div class="work-card">
+            <a href="projects/puppet.html" class="work-card">
                 <div class="aspect-[4/3] bg-zinc-900 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/800x600?text=Puppet+Study" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/800x600?text=Puppet+Study" class="w-full h-full object-cover" alt="Puppet Study">
                 </div>
-                <h4 class="text-xl font-bold uppercase italic">Stop Motion Puppet</h4>
+                <h4 class="text-xl font-bold uppercase italic text-white">Stop Motion Puppet</h4>
                 <p class="text-zinc-500 text-xs mt-2 uppercase tracking-widest">Character Design & Tactile Animation</p>
-            </div>
+            </a>
 
         </div>
     </section>
