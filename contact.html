@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTACT | USHOO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
+        .contact-link { transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1); }
+        .contact-link:hover { padding-left: 20px; color: #a1a1aa; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="p-8 flex justify-between items-center uppercase tracking-[0.2em]">
+        <a href="index.html" class="text-xl font-bold italic">USHOO.ART</a>
+        <div class="space-x-8 text-[10px] font-medium">
+            <a href="index.html#work" class="hover:text-zinc-400 transition-colors">Works</a>
+            <a href="contact.html" class="text-zinc-400">Contact</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center px-8 md:px-24">
+        <div class="max-w-5xl w-full">
+            <p class="text-zinc-500 text-xs uppercase tracking-[0.4em] mb-12">Get in touch</p>
+            
+            <div class="space-y-6 md:space-y-4">
+                <div class="group">
+                    <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-2">Email</p>
+                    <p class="text-3xl md:text-6xl font-black tracking-tighter contact-link">HELLO@USHOO.ART</p>
+                </div>
+
+                <hr class="border-zinc-900 my-10">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
+                    <div class="contact-link">
+                        <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-4">Instagram</p>
+                        <a href="https://instagram.com/yourhandle" target="_blank" class="text-xl md:text-2xl font-bold italic uppercase tracking-tight hover:underline">@ush_oo</a>
+                    </div>
+
+                    <div class="contact-link">
+                        <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-4">X (Twitter)</p>
+                        <a href="https://x.com/yourhandle" target="_blank" class="text-xl md:text-2xl font-bold italic uppercase tracking-tight hover:underline">@ushoo_art</a>
+                    </div>
+
+                    <div class="contact-link">
+                        <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-4">LinkedIn</p>
+                        <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-xl md:text-2xl font-bold italic uppercase tracking-tight hover:underline">Connect via LinkedIn</a>
+                    </div>
+
+                    <div class="contact-link">
+                        <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-4">Location</p>
+                        <p class="text-xl md:text-2xl font-bold italic uppercase tracking-tight text-zinc-400">Jersey City / NYC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="p-8 text-[10px] tracking-[0.3em] text-zinc-800 uppercase">
+        &copy; 2026 USHOO Studio. Available for Summer Internship.
+    </footer>
+
+</body>
+</html>
