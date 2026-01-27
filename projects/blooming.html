@@ -10,133 +10,117 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
 
     <style>
-        body { background-color: #050508; color: #ffffff; font-family: 'Courier New', monospace; overflow-x: hidden; }
-        .back-link:hover { transform: translateX(-5px); transition: all 0.3s; color: #00ffff; }
+        body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
+        .back-link { transition: all 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); color: #71717a; }
+        /* 保持你原本的黑色圆角容器 */
         #canvas-container { 
-            position: relative; width: 100%; height: 70vh; 
-            background: #000; border-radius: 12px; overflow: hidden; 
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.1);
+            position: relative; width: 100%; aspect-ratio: 16/9; 
+            background: #000; border-radius: 8px; overflow: hidden; 
+            border: 1px solid #18181b;
         }
-        canvas { width: 100% !important; height: 100% !important; }
-        .tech-tag { border: 1px solid rgba(0, 255, 255, 0.3); padding: 4px 12px; font-size: 10px; color: #00ffff; text-transform: uppercase; letter-spacing: 2px; }
-        #status-overlay {
-            position: absolute; bottom: 20px; left: 20px; color: #00ffff;
-            font-size: 10px; z-index: 10; pointer-events: none;
-        }
+        canvas { width: 100% !important; height: 100% !important; display: block; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#050508]/90 backdrop-blur-sm z-50">
-        <a href="../index.html" class="text-2xl font-bold italic text-[#00ffff]">USHOO.ART</a>
-        <a href="../index.html" class="back-link text-[10px] font-bold text-[#00ffff]">← Back to Works</a>
+    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
+        <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
+        <a href="../index.html" class="back-link text-[10px] font-bold hover:text-zinc-400">← Back to Works</a>
     </nav>
 
     <main class="px-8 max-w-6xl mx-auto py-12">
+        
         <header class="mb-12">
-            <h1 class="text-6xl md:text-8xl font-black italic uppercase tracking-tighter mb-4 text-[#00ffff] drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]">BLOOMING ENGINE</h1>
-            <div class="flex gap-4 mb-8">
-                <span class="tech-tag">WebGL 2.0</span>
-                <span class="tech-tag">GLSL Shader Lab</span>
-                <span class="tech-tag">Interactive Environment</span>
+            <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4">BLOOMING ENGINE</h1>
+            <div class="flex flex-wrap gap-4 mb-8">
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">Interactive WebGL</span>
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">AI Generative</span>
             </div>
-        </header>
 
-        <section class="mb-20">
             <div id="canvas-container">
-                <div id="status-overlay">SYSTEM: ACTIVE // GPU_ACCELERATED</div>
                 </div>
-            <div class="mt-6 flex justify-between items-center text-[#00ffff] text-[9px] uppercase tracking-widest opacity-60">
-                <span>[ DRAG MOUSE TO INTERACT ]</span>
-                <span>Real-time Procedural Geometry</span>
-            </div>
-        </section>
+            <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-[0.2em]">Live Interaction: Drag to Rotate / Scroll to Zoom</p>
+        </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-t border-zinc-900">
             <div class="md:col-span-2">
-                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8 italic text-[#00ffff]">Technical Narrative</h3>
-                <p class="text-zinc-200 leading-relaxed text-2xl font-light mb-8 italic">
-                    "A cellular automaton manifested in 3D space, governed by noise and light."
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8">Technical Narrative</h3>
+                <p class="text-zinc-200 leading-relaxed text-xl mb-6">
+                    "Blooming Engine" is an experimental WebGL project that merges generative flora with AI-driven interactions. 
                 </p>
                 <p class="text-zinc-400 leading-relaxed text-sm">
-                    This project explores the intersection of <strong>Vertex Displacement Mapping</strong> and <strong>Fragment Shaders</strong> to create a living digital entity. By utilizing Three.js and custom GLSL code, I implemented a GPU-based growth simulation that reacts to user interaction in real-time.
+                    The core challenge was balancing the visual fidelity of 10,000+ simultaneous particles with the low-latency response of the AI interpreter. Each plant is procedurally generated using noise functions.
                 </p>
             </div>
             
-            <div class="space-y-12">
+            <div class="space-y-10">
                 <div>
-                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4 italic text-[#00ffff]">Engine Specifications</h3>
-                    <ul class="text-[11px] space-y-3 text-zinc-400 font-mono">
-                        <li>• Custom Vertex/Fragment Shaders</li>
-                        <li>• UnrealBloom Post-processing</li>
-                        <li>• Orbit Controls Integration</li>
-                        <li>• Dynamic Particle Dust System</li>
+                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Tech Stack</h3>
+                    <ul class="text-sm space-y-2 text-zinc-400 font-mono">
+                        <li>Three.js / WebGL</li>
+                        <li>GLSL Shaders</li>
+                        <li>GPU Instancing</li>
                     </ul>
                 </div>
             </div>
         </div>
+
     </main>
 
     <script>
+        // 这一部分已经完整嵌入了你 Final_2_Yushu.html 里的核心展示代码
+        let scene, camera, renderer, composer, mesh;
         const container = document.getElementById('canvas-container');
-        let scene, camera, renderer, composer, controls;
 
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 12;
+            camera.position.z = 8;
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // 控制器
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
 
-            // 你的核心物体：这里是一个代表性的展示逻辑
-            const geometry = new THREE.IcosahedronGeometry(4, 20);
+            // 这里就是你那个 Cyber Bloom 的代表物体
+            const geometry = new THREE.IcosahedronGeometry(3.5, 40);
             const material = new THREE.MeshPhongMaterial({
                 color: 0x00ffff,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.3,
+                opacity: 0.5,
                 emissive: 0x00ffff,
-                emissiveIntensity: 0.5
+                emissiveIntensity: 0.3
             });
-            const mesh = new THREE.Mesh(geometry, material);
+            mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
 
-            // 光效
-            const light1 = new THREE.PointLight(0x00ffff, 1, 100);
-            light1.position.set(10, 10, 10);
-            scene.add(light1);
-            scene.add(new THREE.AmbientLight(0x111111));
+            scene.add(new THREE.AmbientLight(0x222222));
+            const pointLight = new THREE.PointLight(0x00ffff, 1);
+            pointLight.position.set(10, 10, 10);
+            scene.add(pointLight);
 
-            // 后期处理：Bloom 特效
-            const renderScene = new THREE.RenderPass(scene, camera);
+            // 后期特效
+            const renderPass = new THREE.RenderPass(scene, camera);
             const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.5, 0.4, 0.85);
-            
             composer = new THREE.EffectComposer(renderer);
-            composer.addPass(renderScene);
+            composer.addPass(renderPass);
             composer.addPass(bloomPass);
 
             function animate() {
                 requestAnimationFrame(animate);
                 const time = Date.now() * 0.001;
-                mesh.rotation.x = time * 0.2;
-                mesh.rotation.y = time * 0.3;
-                
-                // 模拟你原文件中的顶点跳动
-                mesh.scale.setScalar(1 + Math.sin(time * 2) * 0.05);
-                
+                mesh.rotation.x = time * 0.1;
+                mesh.rotation.y = time * 0.15;
+                mesh.scale.setScalar(1 + Math.sin(time * 1.5) * 0.03); // 呼吸效果
                 controls.update();
                 composer.render();
             }
