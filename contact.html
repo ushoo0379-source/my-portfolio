@@ -9,6 +9,7 @@
         body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
         .contact-link { transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1); }
         .contact-link:hover { padding-left: 20px; color: #a1a1aa; }
+        .resume-btn:hover { background-color: #ffffff; color: #000000; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -28,7 +29,14 @@
             <div class="space-y-6 md:space-y-4">
                 <div class="group">
                     <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-2">Email</p>
-                    <p class="text-3xl md:text-6xl font-black tracking-tighter contact-link">yli205@sva.edu</p>
+                    <a href="mailto:yli205@sva.edu" class="text-3xl md:text-6xl font-black tracking-tighter contact-link block">yli205@sva.edu</a>
+                </div>
+
+                <div class="mt-8">
+                    <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-4">Curriculum Vitae</p>
+                    <a href="Yushu_Li_Intern_CV.pdf" target="_blank" class="resume-btn inline-block border border-zinc-700 px-8 py-4 text-xs uppercase tracking-[0.3em] font-bold transition-all duration-300">
+                        Download Resume PDF
+                    </a>
                 </div>
 
                 <hr class="border-zinc-900 my-10">
@@ -36,18 +44,17 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
                     <div class="contact-link">
                         <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-4">Instagram</p>
-                        <a href="https://instagram.com/yourhandle" target="_blank" class="text-xl md:text-2xl font-bold italic uppercase tracking-tight hover:underline">@ushoo00</a>
+                        <a href="https://instagram.com/ushoo00" target="_blank" class="text-xl md:text-2xl font-bold italic uppercase tracking-tight hover:underline">@ushoo00</a>
                     </div>
 
                     <div class="contact-link">
                         <p class="text-zinc-600 text-[10px] uppercase tracking-widest mb-4">LinkedIn</p>
-                        <a href="https://www.linkedin.com/in/yushu-li-47798438b"
-                            target="_blank"
-                            class="text-xl md:text-2xl font-bold italic uppercase tracking-tight hover:underline">
-                            LINKEDIN.COM/IN/YUSHU-LI
+                        <a href="https://www.linkedin.com/in/yushu-li-47798438b" 
+                           target="_blank" 
+                           class="text-xl md:text-2xl font-bold italic uppercase tracking-tight hover:underline">
+                           LINKEDIN.COM/IN/YUSHU-LI
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>
