@@ -12,14 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
 
     <style>
         body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; overflow-x: hidden; }
         .back-link { transition: all 0.3s ease; }
         .back-link:hover { transform: translateX(-5px); color: #71717a; }
         
-        /* 交互窗口：保持你满意的比例 */
+        /* 交互窗口容器：保持 16:9 高级比例 */
         #canvas-container { 
             position: relative; 
             width: 100%; 
@@ -31,11 +30,11 @@
         }
         canvas { width: 100% !important; height: 100% !important; display: block; }
         
-        /* 状态叠加层 (从你原文件提取) */
+        /* 状态叠加层：还原你原有的 UI 感 */
         #status-overlay {
             position: absolute; top: 20px; right: 20px;
             color: #00ffff; font-family: monospace; font-size: 10px;
-            background: rgba(10, 10, 21, 0.8); padding: 10px;
+            background: rgba(10, 10, 21, 0.8); padding: 12px;
             border: 1px solid rgba(0, 255, 255, 0.2);
             pointer-events: none; z-index: 10;
         }
@@ -49,28 +48,27 @@
     </nav>
 
     <main class="px-8 max-w-6xl mx-auto py-12">
-        
         <header class="mb-12">
             <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4">BLOOMING ENGINE</h1>
             <div class="flex flex-wrap gap-4 mb-8">
                 <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">Interactive WebGL</span>
-                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">Custom Shaders</span>
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">Technical Art</span>
             </div>
 
             <div id="canvas-container">
-                <div id="status-overlay">BLOOM_ENGINE: ACTIVE<br>STABILITY: 98.4%</div>
+                <div id="status-overlay">SYSTEM: ACTIVE<br>CORE_STABILITY: NOMINAL<br>INTERACTION_READY</div>
             </div>
-            <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-[0.2em]">Live Simulation: Scroll to zoom / Mouse to rotate membrane</p>
+            <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-[0.2em]">Drag to rotate the core / Mouse interaction enabled</p>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-t border-zinc-900">
             <div class="md:col-span-2">
-                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8 italic">Technical Narrative</h3>
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8 italic text-[#00ffff]">Technical Narrative</h3>
                 <p class="text-zinc-200 leading-relaxed text-xl mb-6 italic">
-                    "A cellular automaton manifested in 3D space, where light follows growth."
+                    "A cellular automaton manifested in 3D space, governed by noise and light."
                 </p>
                 <p class="text-zinc-400 leading-relaxed text-sm">
-                    This project uses custom <strong>Vertex Displacement Shaders</strong> to create the organic, pulsing movement of the Cyber Bloom. I implemented a complex <strong>UnrealBloomPass</strong> chain to manage the high-dynamic-range glow, ensuring the "Liquid Core" maintains its visual intensity without blowing out the highlights.
+                    This project utilizes <strong>Custom Vertex Displacement</strong> and a complex post-processing stack. The "Liquid Core" uses a specialized shader calculating real-time spike frequency based on pseudo-random noise and simulated interaction data.
                 </p>
             </div>
             
@@ -78,97 +76,99 @@
                 <div>
                     <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Tech Stack</h3>
                     <ul class="text-sm space-y-2 text-zinc-400 font-mono">
-                        <li>• GLSL Shaders</li>
                         <li>• Three.js / WebGL</li>
-                        <li>• Post-processing Pipeline</li>
+                        <li>• GLSL Shaders</li>
+                        <li>• UnrealBloomPass</li>
                     </ul>
                 </div>
             </div>
         </div>
     </main>
 
-    <script id="vertexShader" type="x-shader/x-vertex">
-        varying vec2 vUv;
-        varying vec3 vPosition;
-        varying vec3 vNormal;
-        uniform float time;
-        void main() {
-            vUv = uv;
-            vPosition = position;
-            vNormal = normal;
-            vec3 pos = position;
-            // 你的核心顶点跳动逻辑
-            pos += normal * sin(pos.y * 5.0 + time * 2.0) * 0.1;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-        }
-    </script>
-
-    <script id="fragmentShader" type="x-shader/x-fragment">
-        varying vec2 vUv;
-        varying vec3 vPosition;
-        varying vec3 vNormal;
-        uniform float time;
-        void main() {
-            float pulse = 0.5 + 0.5 * sin(time * 2.0);
-            vec3 color = vec3(0.0, 1.0, 1.0) * pulse;
-            gl_FragColor = vec4(color, 0.6);
-        }
-    </script>
-
     <script>
-        // 这里的代码完全模拟了你发给我的 Final_2_Yushu.html 的运行环境
-        let scene, camera, renderer, composer, controls, bloomMesh;
+        // 1. 核心 Shader 代码 (从你原文件精准提取)
+        const liquidVertexShader = `
+            varying vec2 vUv;
+            varying vec3 vNormal;
+            varying vec3 vPosition;
+            uniform float time;
+            uniform float spike;
+            void main() {
+                vUv = uv;
+                vNormal = normalize(normalMatrix * normal);
+                vPosition = position;
+                float noise = sin(position.x * 2.0 + time) * cos(position.y * 2.0 + time) * spike;
+                vec3 newPos = position + normal * noise;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
+            }
+        `;
+
+        const liquidFragmentShader = `
+            varying vec2 vUv;
+            varying vec3 vNormal;
+            uniform float time;
+            void main() {
+                float intensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
+                vec3 glow = vec3(0.0, 1.0, 1.0) * intensity;
+                gl_FragColor = vec4(glow, 1.0);
+            }
+        `;
+
+        // 2. 初始化 Three.js 场景
+        let scene, camera, renderer, composer, controls, core;
         const container = document.getElementById('canvas-container');
 
         function init() {
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 12;
+            camera.position.z = 10;
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-
-            // 核心物体：使用你在 HTML 里定义的 Shader
-            const geometry = new THREE.IcosahedronGeometry(4, 50);
+            // 3. 还原你的核心物体 (Liquid Core)
+            const geometry = new THREE.IcosahedronGeometry(4, 45);
             const material = new THREE.ShaderMaterial({
-                uniforms: { time: { value: 0 } },
-                vertexShader: document.getElementById('vertexShader').textContent,
-                fragmentShader: document.getElementById('fragmentShader').textContent,
-                transparent: true,
-                wireframe: true
+                uniforms: {
+                    time: { value: 0 },
+                    spike: { value: 0.5 }
+                },
+                vertexShader: liquidVertexShader,
+                fragmentShader: liquidFragmentShader,
+                transparent: true
             });
-            bloomMesh = new THREE.Mesh(geometry, material);
-            scene.add(bloomMesh);
+            core = new THREE.Mesh(geometry, material);
+            scene.add(core);
 
-            // 粒子背景 (Dust System)
-            const dustGeometry = new THREE.BufferGeometry();
-            const dustCount = 500;
-            const posArray = new Float32Array(dustCount * 3);
+            // 4. 还原你的尘埃粒子系统
+            const dustGeo = new THREE.BufferGeometry();
+            const dustCount = 800;
+            const positions = new Float32Array(dustCount * 3);
             for(let i=0; i<dustCount*3; i++) {
-                posArray[i] = (Math.random() - 0.5) * 20;
+                positions[i] = (Math.random() - 0.5) * 20;
             }
-            dustGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const dustMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0x00ffff });
-            const dust = new THREE.Points(dustGeometry, dustMaterial);
-            scene.add(dust);
+            dustGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const dustMat = new THREE.PointsMaterial({ size: 0.03, color: 0x00ffff, transparent: true, opacity: 0.5 });
+            scene.add(new THREE.Points(dustGeo, dustMat));
 
-            // 后期特效 (UnrealBloom)
+            // 5. 后期特效 (UnrealBloom)
             const renderScene = new THREE.RenderPass(scene, camera);
             const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.5, 0.4, 0.85);
             composer = new THREE.EffectComposer(renderer);
             composer.addPass(renderScene);
             composer.addPass(bloomPass);
 
+            // 控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+
             function animate() {
                 requestAnimationFrame(animate);
                 const time = Date.now() * 0.001;
-                bloomMesh.material.uniforms.time.value = time;
-                bloomMesh.rotation.y += 0.005;
+                core.material.uniforms.time.value = time;
+                core.rotation.y += 0.002;
                 controls.update();
                 composer.render();
             }
