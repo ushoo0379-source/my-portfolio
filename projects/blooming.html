@@ -12,77 +12,77 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
     <style>
         body { background: #050508; color: #ffffff; font-family: system-ui, sans-serif; margin: 0; }
-        .back-link:hover { color: #00ffff; transform: translateX(-5px); transition: 0.3s; }
         #canvas-container { 
             position: relative; width: 100%; aspect-ratio: 16/9; 
             background: #000; border-radius: 8px; overflow: hidden; border: 1px solid #1a1a2e;
         }
         canvas { width: 100% !important; height: 100% !important; }
-        #status-overlay {
+        #status-panel {
             position: absolute; top: 15px; right: 15px;
             color: #00ffff; font-family: monospace; font-size: 11px;
-            background: rgba(10, 10, 21, 0.8); padding: 10px;
-            border: 1px solid rgba(0, 255, 255, 0.3); pointer-events: none; z-index: 10;
+            background: rgba(10, 10, 21, 0.9); padding: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.4); pointer-events: none; z-index: 10;
         }
     </style>
 </head>
 <body>
     <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#050508]/90 backdrop-blur-sm z-50">
-        <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
-        <a href="../index.html" class="back-link text-[10px] font-bold">← Back to Works</a>
+        <a href="../index.html" class="text-2xl font-bold italic text-white">USHOO.ART</a>
+        <a href="../index.html" class="text-[10px] font-bold hover:text-cyan-400 transition-colors">← Back to Works</a>
     </nav>
 
     <main class="px-8 max-w-6xl mx-auto py-12">
         <header class="mb-12">
             <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4 text-[#00ffff]">BLOOMING ENGINE</h1>
             <div id="canvas-container">
-                <div id="status-overlay">CORE: LIQUID_PULSE<br>GLSL: ACTIVE<br>STATUS: RUNNING</div>
+                <div id="status-panel">CORE_ENGINE: ACTIVE<br>MEMORY_STABLE: OK<br>PULSE_GEN: SYNC</div>
             </div>
-            <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-[0.2em]">Drag to rotate • Scroll to zoom • Interactive Core Enabled</p>
+            <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-[0.2em]">Live Simulation: Interactive WebGL Environment</p>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-t border-zinc-900">
-            <div class="md:col-span-2 text-zinc-400 text-sm space-y-4">
-                <p class="text-white text-xl italic font-light">"Digital life simulated through GPU instancing and procedural noise."</p>
-                <p>This interactive engine is built on custom WebGL shaders. The Liquid Core utilizes vertex displacement mapped to a Sine-based noise function, creating its organic, rhythmic pulsation.</p>
+            <div class="md:col-span-2 text-zinc-400 text-sm space-y-6">
+                <p class="text-white text-xl italic font-light">"A cellular automaton manifested in 3D space, where light follows growth."</p>
+                <p>该项目核心采用了自定义的 GLSL 顶点偏移着色器，通过 Sine 和 Cosine 噪声函数的叠加，模拟出液态金属般的律动感。配合 UnrealBloom 后期管线，实现了高画质的发光扩散效果。</p>
             </div>
             <div class="space-y-4">
-                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px]">Specifications</h3>
-                <div class="text-[10px] font-mono text-cyan-500 uppercase space-y-1">
-                    <div>> Three.js / UnrealBloom</div>
-                    <div>> Custom GLSL Shaders</div>
-                    <div>> Procedural Noise Lab</div>
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px]">Technical Stack</h3>
+                <div class="text-[10px] font-mono text-cyan-400 space-y-1 uppercase tracking-wider">
+                    <div>> GLSL Vertex Shaders</div>
+                    <div>> Three.js Rendering</div>
+                    <div>> Post-processing Chain</div>
                 </div>
             </div>
         </div>
     </main>
 
+    <script id="vShader" type="x-shader/x-vertex">
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        uniform float time;
+        uniform float spike;
+        void main() {
+            vUv = uv;
+            vNormal = normalize(normalMatrix * normal);
+            // 还原你原文件中的突刺公式
+            float noise = sin(position.x * 2.0 + time) * cos(position.y * 2.0 + time) * spike;
+            vec3 newPos = position + normal * noise * 1.5;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
+        }
+    </script>
+
+    <script id="fShader" type="x-shader/x-fragment">
+        varying vec3 vNormal;
+        uniform float time;
+        void main() {
+            // 还原你原文件中的 Rim Light（边缘光）逻辑
+            float rim = pow(0.75 - dot(vNormal, vec3(0,0,1)), 3.5);
+            vec3 color = vec3(0.0, 1.0, 1.0) * (rim + 0.35 * sin(time * 0.8));
+            gl_FragColor = vec4(color, 1.0);
+        }
+    </script>
+
     <script>
-        // --- 核心 SHADER 还原 ---
-        const vShader = `
-            varying vec2 vUv;
-            varying vec3 vNormal;
-            uniform float time;
-            uniform float spike;
-            void main() {
-                vUv = uv;
-                vNormal = normalize(normalMatrix * normal);
-                float distortion = sin(position.x * 1.5 + time) * cos(position.y * 1.5 + time) * spike;
-                vec3 newPos = position + normal * distortion;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
-            }
-        `;
-
-        const fShader = `
-            varying vec3 vNormal;
-            uniform float time;
-            void main() {
-                float rim = pow(0.7 - dot(vNormal, vec3(0,0,1)), 3.0);
-                vec3 color = vec3(0.0, 1.0, 1.0) * (rim + 0.3 * sin(time * 0.5));
-                gl_FragColor = vec4(color, 0.8);
-            }
-        `;
-
         let scene, camera, renderer, composer, controls, core;
         const container = document.getElementById('canvas-container');
 
@@ -95,33 +95,29 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
-            // 1. 核心 Liquid Core (还原突刺)
-            const coreGeo = new THREE.IcosahedronGeometry(3.5, 64);
+            // 1. 核心 Liquid Core (完全还原你原件的细分数和材质)
+            const coreGeo = new THREE.IcosahedronGeometry(3.5, 60);
             const coreMat = new THREE.ShaderMaterial({
-                uniforms: { time: { value: 0 }, spike: { value: 0.75 } },
-                vertexShader: vShader, fragmentShader: fShader, transparent: true
+                uniforms: { time: { value: 0 }, spike: { value: 0.8 } },
+                vertexShader: document.getElementById('vShader').textContent,
+                fragmentShader: document.getElementById('fShader').textContent,
+                transparent: true
             });
             core = new THREE.Mesh(coreGeo, coreMat);
             scene.add(core);
 
-            // 2. 膜系统 (Membrane)
-            const memGeo = new THREE.IcosahedronGeometry(4.2, 24);
-            const memMat = new THREE.PointsMaterial({ size: 0.02, color: 0x00ffff, transparent: true, opacity: 0.2 });
-            const membrane = new THREE.Points(memGeo, memMat);
-            scene.add(membrane);
-
-            // 3. 尘埃粒子
+            // 2. 还原尘埃系统 (Dust)
             const dustGeo = new THREE.BufferGeometry();
-            const pos = new Float32Array(500 * 3);
-            for(let i=0; i<1500; i++) pos[i] = (Math.random() - 0.5) * 20;
-            dustGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-            scene.add(new THREE.Points(dustGeo, new THREE.PointsMaterial({ size: 0.015, color: 0x00ffff, transparent: true, opacity: 0.5 })));
+            const posArr = new Float32Array(800 * 3);
+            for(let i=0; i<2400; i++) posArr[i] = (Math.random() - 0.5) * 30;
+            dustGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+            scene.add(new THREE.Points(dustGeo, new THREE.PointsMaterial({ size: 0.02, color: 0x00ffff, transparent: true, opacity: 0.4 })));
 
-            // 4. 后期辉光
-            const renderScene = new THREE.RenderPass(scene, camera);
-            const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.8, 0.4, 0.85);
+            // 3. 还原后处理辉光 (Bloom)
+            const renderPass = new THREE.RenderPass(scene, camera);
+            const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 2.0, 0.5, 0.85);
             composer = new THREE.EffectComposer(renderer);
-            composer.addPass(renderScene);
+            composer.addPass(renderPass);
             composer.addPass(bloomPass);
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -129,10 +125,9 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                const time = Date.now() * 0.001;
-                core.material.uniforms.time.value = time;
-                membrane.rotation.y += 0.001;
-                membrane.scale.setScalar(1 + Math.sin(time) * 0.05);
+                const t = Date.now() * 0.001;
+                core.material.uniforms.time.value = t;
+                core.rotation.y += 0.003;
                 controls.update();
                 composer.render();
             }
@@ -141,7 +136,7 @@
 
         init();
         window.addEventListener('resize', () => {
-            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.aspect = container.clientWidth/container.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
             composer.setSize(container.clientWidth, container.clientHeight);
