@@ -5,97 +5,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLOOMING ENGINE | USHOO.ART</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+
     <style>
-        body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
-        .back-link { transition: all 0.3s ease; }
-        .back-link:hover { transform: translateX(-5px); }
-        /* 交互容器样式 */
-        .interactive-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #111; border-radius: 12px; overflow: hidden; border: 1px solid #222; }
-        iframe { width: 100%; height: 100%; border: none; }
-        /* 启动遮罩 */
-        #overlay { position: absolute; inset: 0; background: rgba(10,10,10,0.8); backdrop-blur: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; transition: opacity 0.5s ease; cursor: pointer; }
-        #overlay:hover { background: rgba(20,20,20,0.6); }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        body { background-color: #050508; color: #ffffff; font-family: 'Courier New', monospace; overflow-x: hidden; }
+        .back-link:hover { transform: translateX(-5px); transition: all 0.3s; color: #00ffff; }
+        #canvas-container { 
+            position: relative; width: 100%; height: 70vh; 
+            background: #000; border-radius: 12px; overflow: hidden; 
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.1);
+        }
+        canvas { width: 100% !important; height: 100% !important; }
+        .tech-tag { border: 1px solid rgba(0, 255, 255, 0.3); padding: 4px 12px; font-size: 10px; color: #00ffff; text-transform: uppercase; letter-spacing: 2px; }
+        #status-overlay {
+            position: absolute; bottom: 20px; left: 20px; color: #00ffff;
+            font-size: 10px; z-index: 10; pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
-        <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
-        <a href="../index.html" class="back-link text-[10px] font-bold hover:text-zinc-400">← Back to Works</a>
+    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#050508]/90 backdrop-blur-sm z-50">
+        <a href="../index.html" class="text-2xl font-bold italic text-[#00ffff]">USHOO.ART</a>
+        <a href="../index.html" class="back-link text-[10px] font-bold text-[#00ffff]">← Back to Works</a>
     </nav>
 
     <main class="px-8 max-w-6xl mx-auto py-12">
-        
-        <header class="mb-12 text-center md:text-left">
-            <h1 class="text-6xl md:text-8xl font-black italic uppercase tracking-tighter mb-4">BLOOMING ENGINE</h1>
-            <p class="text-zinc-500 uppercase tracking-[0.4em] text-xs">Interactive WebGL / Generative Art System</p>
+        <header class="mb-12">
+            <h1 class="text-6xl md:text-8xl font-black italic uppercase tracking-tighter mb-4 text-[#00ffff] drop-shadow-[0_0_15px_rgba(0,255,255,0.5)]">BLOOMING ENGINE</h1>
+            <div class="flex gap-4 mb-8">
+                <span class="tech-tag">WebGL 2.0</span>
+                <span class="tech-tag">GLSL Shader Lab</span>
+                <span class="tech-tag">Interactive Environment</span>
+            </div>
         </header>
 
         <section class="mb-20">
-            <div class="interactive-container group shadow-2xl">
-                <div id="overlay" onclick="startInteractive()">
-                    <div class="w-16 h-16 border border-white/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <div class="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
-                    </div>
-                    <p class="text-[10px] uppercase tracking-[0.5em] text-white">Click to Launch Interactive Experience</p>
-                    <p class="text-[9px] text-zinc-500 mt-4 font-mono uppercase tracking-widest">WebGL / Real-time Rendering</p>
+            <div id="canvas-container">
+                <div id="status-overlay">SYSTEM: ACTIVE // GPU_ACCELERATED</div>
                 </div>
-                
-                <iframe id="live-frame" data-src="https://your-interactive-site-url.com"></iframe>
-            </div>
-            <div class="mt-4 flex justify-between items-center text-zinc-600 text-[9px] uppercase tracking-widest font-mono">
-                <span>[ DESKTOP RECOMMENDED ]</span>
-                <span>DRAG TO ROTATE • SCROLL TO ZOOM</span>
+            <div class="mt-6 flex justify-between items-center text-[#00ffff] text-[9px] uppercase tracking-widest opacity-60">
+                <span>[ DRAG MOUSE TO INTERACT ]</span>
+                <span>Real-time Procedural Geometry</span>
             </div>
         </section>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-t border-zinc-900">
             <div class="md:col-span-2">
-                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8 italic">The Concept</h3>
-                <p class="text-zinc-200 leading-relaxed text-2xl font-light mb-8">
-                    An organic growth simulation where mathematics meet artistic intuition. 
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8 italic text-[#00ffff]">Technical Narrative</h3>
+                <p class="text-zinc-200 leading-relaxed text-2xl font-light mb-8 italic">
+                    "A cellular automaton manifested in 3D space, governed by noise and light."
                 </p>
-                <div class="prose prose-invert text-zinc-400 max-w-none">
-                    <p class="mb-6">The Blooming Engine utilizes <strong>Custom GLSL Shaders</strong> to calculate the growth of each petal in real-time. By offloading complex vertex animations to the GPU, the system can render thousands of blooming instances while maintaining a smooth 60FPS interaction.</p>
-                </div>
+                <p class="text-zinc-400 leading-relaxed text-sm">
+                    This project explores the intersection of <strong>Vertex Displacement Mapping</strong> and <strong>Fragment Shaders</strong> to create a living digital entity. By utilizing Three.js and custom GLSL code, I implemented a GPU-based growth simulation that reacts to user interaction in real-time.
+                </p>
             </div>
             
             <div class="space-y-12">
                 <div>
-                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4 italic">Core Tech</h3>
-                    <ul class="text-sm space-y-3 text-zinc-400 font-mono">
-                        <li class="flex items-center"><span class="w-2 h-2 bg-zinc-800 mr-3"></span>Three.js / WebGL</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-zinc-800 mr-3"></span>GLSL Shader Lab</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-zinc-800 mr-3"></span>OpenAI API Integration</li>
-                        <li class="flex items-center"><span class="w-2 h-2 bg-zinc-800 mr-3"></span>Procedural Noise Logic</li>
+                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4 italic text-[#00ffff]">Engine Specifications</h3>
+                    <ul class="text-[11px] space-y-3 text-zinc-400 font-mono">
+                        <li>• Custom Vertex/Fragment Shaders</li>
+                        <li>• UnrealBloom Post-processing</li>
+                        <li>• Orbit Controls Integration</li>
+                        <li>• Dynamic Particle Dust System</li>
                     </ul>
                 </div>
             </div>
         </div>
-
     </main>
+
+    <script>
+        const container = document.getElementById('canvas-container');
+        let scene, camera, renderer, composer, controls;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 12;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // 控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+
+            // 你的核心物体：这里是一个代表性的展示逻辑
+            const geometry = new THREE.IcosahedronGeometry(4, 20);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x00ffff,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3,
+                emissive: 0x00ffff,
+                emissiveIntensity: 0.5
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            // 光效
+            const light1 = new THREE.PointLight(0x00ffff, 1, 100);
+            light1.position.set(10, 10, 10);
+            scene.add(light1);
+            scene.add(new THREE.AmbientLight(0x111111));
+
+            // 后期处理：Bloom 特效
+            const renderScene = new THREE.RenderPass(scene, camera);
+            const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.5, 0.4, 0.85);
+            
+            composer = new THREE.EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const time = Date.now() * 0.001;
+                mesh.rotation.x = time * 0.2;
+                mesh.rotation.y = time * 0.3;
+                
+                // 模拟你原文件中的顶点跳动
+                mesh.scale.setScalar(1 + Math.sin(time * 2) * 0.05);
+                
+                controls.update();
+                composer.render();
+            }
+            animate();
+        }
+
+        init();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            composer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
 
     <footer class="p-20 text-center border-t border-zinc-900">
         <p class="text-zinc-800 text-[10px] uppercase tracking-widest">&copy; 2026 USHOO STUDIO</p>
     </footer>
-
-    <script>
-        function startInteractive() {
-            const frame = document.getElementById('live-frame');
-            const overlay = document.getElementById('overlay');
-            
-            // 开始加载 iframe
-            frame.src = frame.getAttribute('data-src');
-            
-            // 隐藏遮罩
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 500);
-        }
-    </script>
-
 </body>
 </html>
