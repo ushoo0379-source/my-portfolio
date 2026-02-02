@@ -3,197 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Bloom - Yushu Li | Portfolio</title>
+    <title>BLOOMING ENGINE | USHOO.ART</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { overflow: hidden; background: #050508; font-family: 'Courier New', monospace; }
-        canvas { display: block; width: 100%; height: 100vh; }
-        
-        #status {
-            position: fixed; top: 20px; right: 20px;
-            color: #00ffff; font-size: 14px; text-shadow: 0 0 5px #00ffff;
-            z-index: 100; background: rgba(10, 10, 21, 0.9);
-            padding: 15px 20px; border-radius: 8px;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            opacity: 0; transition: all 0.3s;
+        body { background-color: #050508; color: #ffffff; font-family: 'Courier New', monospace; }
+        .cyber-border { border: 1px solid rgba(0, 255, 255, 0.2); }
+        .glow-text { text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .btn-glitch { 
+            background: linear-gradient(45deg, #00ffff 0%, #ff0080 100%);
+            transition: all 0.3s;
+            position: relative;
         }
-        #status.active { opacity: 1; border-color: #00ff00; box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); }
-        
-        .t-value { color: #ff0080; font-weight: bold; font-size: 24px; }
-        #mode-indicator { margin-top: 5px; font-weight: bold; color: #ffff00; font-size: 16px; }
-        
-        .interaction-guide {
-            position: fixed; bottom: 20px; left: 20px;
-            color: #00ffff; font-size: 13px; text-shadow: 0 0 5px #00ffff;
-            z-index: 100; background: rgba(10, 10, 21, 0.85);
-            padding: 15px 20px; border-radius: 8px;
-            border: 1px solid rgba(0, 255, 255, 0.3); pointer-events: none;
-        }
-        .interaction-guide h3 { font-size: 16px; margin-bottom: 10px; color: #ff0080; letter-spacing: 2px; }
-
-        #webcam-video {
-            position: fixed; top: 20px; left: 20px;
-            width: 160px; height: 120px;
-            border: 1px solid #00ffff; opacity: 0.6; 
-            z-index: 999; transform: scaleX(-1);
-            border-radius: 4px; display: none;
-        }
-        
-        #loading-ai {
-            position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: #00ffff; font-size: 20px;
-            background: rgba(0,0,0,0.9); padding: 40px;
-            border: 2px solid #ff0080; border-radius: 10px;
-            z-index: 2000; text-align: center;
-        }
-        .back-btn {
-            position: fixed; top: 20px; left: 200px;
-            color: #fff; text-decoration: none; font-size: 12px;
-            border: 1px solid #333; padding: 5px 15px; border-radius: 20px;
-            background: rgba(255,255,255,0.1); z-index: 1000;
-        }
+        .btn-glitch:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 0, 128, 0.6); }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-btn">← BACK TO GALLERY</a>
-    <video id="webcam-video" autoplay playsinline></video>
-    <div id="loading-ai">🧬 INITIALIZING AI SYSTEMS...<br><div style="margin-top:15px; font-size:14px; color:#aaa">Connecting to Mediapipe WASM...</div></div>
 
-    <div id="status">
-        🖐️ VISION ENGINE ONLINE<br>
-        <div id="mode-indicator">READY</div>
-        <span class="t-value">BLOOM: <span id="t-value">0%</span></span>
-    </div>
-    
-    <div class="interaction-guide">
-        <h3>🧙‍♂️ TELEKINESIS FIELD</h3>
-        <p>👋 <b>OPEN HAND</b> → GROW BLOOM</p>
-        <p>✊ <b>FIST</b> → IMPLODE</p>
-        <p>✌️ <b>VICTORY</b> → CHANGE COLOR</p>
-    </div>
+    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#050508]/90 backdrop-blur-md z-50">
+        <a href="../index.html" class="text-xl font-bold glow-text">USHOO.ART</a>
+        <a href="../index.html" class="text-[10px] hover:text-cyan-400">← EXIT SIMULATION</a>
+    </nav>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
-                "@mediapipe/tasks-vision": "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs"
-            }
-        }
-    </script>
+    <main class="px-8 max-w-6xl mx-auto py-12">
+        
+        <header class="mb-20">
+            <h1 class="text-5xl font-black italic tracking-tighter mb-2 glow-text">BLOOMING ENGINE</h1>
+            <p class="text-cyan-500 text-[10px] tracking-[0.4em] mb-8 uppercase">Project 02: Bio-Digital Interaction</p>
+            
+            <div class="video-container cyber-border rounded-lg shadow-[0_0_50px_rgba(0,255,255,0.1)]">
+                <iframe src="https://www.youtube.com/embed/你的20s视频ID?autoplay=1&mute=1&loop=1" allowfullscreen></iframe>
+            </div>
+        </header>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-        import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
+        <div class="py-16 border-y border-zinc-900 text-center mb-20">
+            <h3 class="text-[10px] tracking-[0.5em] text-zinc-500 mb-8 uppercase">Ready to test the interface?</h3>
+            <a href="blooming-lab.html" class="btn-glitch inline-block px-12 py-5 text-black font-black uppercase tracking-widest text-xs rounded-sm">
+                [ Enter Interactive Lab ]
+            </a>
+            <p class="mt-6 text-[9px] text-zinc-600 tracking-widest">
+                *REQUIRES CAMERA ACCESS & HIGH-END GPU<br>
+                OPTIMIZED FOR CHROME DESKTOP
+            </p>
+        </div>
 
-        // --- SCENE SETUP ---
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.body.appendChild(renderer.domElement);
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-pink-500 uppercase tracking-[0.3em] text-[10px] mb-4">Technical Breakdown</h3>
+                    <p class="text-zinc-300 leading-relaxed italic mb-6">
+                        "How do we translate physical energy into digital growth?"
+                    </p>
+                    <p class="text-zinc-500 text-sm leading-relaxed">
+                        该项目通过 Mediapipe 进行实时手势捕捉，并利用其座标映射到 Three.js 的力场中。
+                        视频详细展示了“握拳”、“张开”与“反转”如何影响植物的几何变形与 Bloom 效果。
+                    </p>
+                </div>
+                
+                <div class="p-6 bg-zinc-950 cyber-border">
+                    <h4 class="text-cyan-400 text-[10px] uppercase mb-4 tracking-widest">Core Stack</h4>
+                    <ul class="text-[10px] space-y-2 font-mono text-zinc-400">
+                        <li>> WebGL / Three.js (Rendering)</li>
+                        <li>> Mediapipe Vision (CV Hand Tracking)</li>
+                        <li>> GLSL Shaders (Distortion & Post-Processing)</li>
+                        <li>> Noise-driven Animation Logic</li>
+                    </ul>
+                </div>
+            </div>
 
-        camera.position.z = 5;
+            <div class="space-y-4">
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px]">Gesture Logic Video</h3>
+                <div class="video-container cyber-border">
+                    <iframe src="https://www.youtube.com/embed/你的80s讲解视频ID" allowfullscreen></iframe>
+                </div>
+                <p class="text-[9px] text-zinc-700 italic">Full walkthrough of gesture controls and system feedback.</p>
+            </div>
+        </div>
 
-        // --- POST PROCESSING ---
-        const renderScene = new RenderPass(scene, camera);
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        const composer = new EffectComposer(renderer);
-        composer.addPass(renderScene);
-        composer.addPass(bloomPass);
+    </main>
 
-        // --- OBJECTS ---
-        const geometry = new THREE.IcosahedronGeometry(1, 15);
-        const material = new THREE.MeshStandardMaterial({ 
-            color: 0x00ffff, 
-            wireframe: true,
-            emissive: 0x00ffff,
-            emissiveIntensity: 0.5
-        });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
+    <footer class="p-20 text-center border-t border-zinc-900 mt-20">
+        <p class="text-zinc-800 text-[10px] uppercase tracking-widest">© 2026 USHOO LABS // SVA COMPUTER ART</p>
+    </footer>
 
-        const light = new THREE.PointLight(0xff0080, 2, 10);
-        light.position.set(2, 2, 2);
-        scene.add(light);
-        scene.add(new THREE.AmbientLight(0x404040));
-
-        // --- AI & WEBCAM ---
-        let handLandmarker;
-        let webcamRunning = false;
-        const video = document.getElementById("webcam-video");
-        const loadingDiv = document.getElementById("loading-ai");
-        const statusDiv = document.getElementById("status");
-
-        async function initAI() {
-            try {
-                const vision = await FilesetResolver.forVisionTasks(
-                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
-                );
-                handLandmarker = await HandLandmarker.createFromOptions(vision, {
-                    baseOptions: {
-                        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-                        delegate: "GPU"
-                    },
-                    runningMode: "VIDEO"
-                });
-                startWebcam();
-            } catch (error) {
-                console.error("AI Init Failed:", error);
-                loadingDiv.innerHTML = "❌ AI LOAD ERROR<br>Check Console (F12)";
-            }
-        }
-
-        async function startWebcam() {
-            const constraints = { video: true };
-            navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-                video.srcObject = stream;
-                video.addEventListener("loadeddata", () => {
-                    webcamRunning = true;
-                    loadingDiv.style.display = "none";
-                    statusDiv.classList.add("active");
-                    animate();
-                });
-            });
-        }
-
-        // --- ANIMATION LOOP ---
-        let bloomFactor = 0;
-        function animate() {
-            requestAnimationFrame(animate);
-
-            if (webcamRunning) {
-                const startTimeMs = performance.now();
-                const results = handLandmarker.detectForVideo(video, startTimeMs);
-
-                if (results.landmarks && results.landmarks.length > 0) {
-                    // Simple interaction logic
-                    bloomFactor = THREE.MathUtils.lerp(bloomFactor, 2, 0.1);
-                    sphere.rotation.y += 0.05;
-                    sphere.scale.setScalar(1 + Math.sin(Date.now() * 0.005) * 0.2);
-                    document.getElementById("t-value").innerText = Math.round(bloomFactor * 50) + "%";
-                } else {
-                    bloomFactor = THREE.MathUtils.lerp(bloomFactor, 0, 0.05);
-                }
-            }
-
-            sphere.rotation.x += 0.01;
-            composer.render();
-        }
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            composer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        initAI();
-    </script>
 </body>
 </html>
