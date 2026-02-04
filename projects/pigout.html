@@ -1,62 +1,82 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pigout | USHOO.ART</title>
+    <title>PIGOUT | USHOO.ART</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #141414; border-radius: 8px; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .back-link { transition: all 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
         <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
-        <div class="space-x-8 text-[10px] font-bold">
-            <a href="../index.html#work" class="hover:text-zinc-400 transition-colors">Works</a>
-            <a href="../contact.html" class="hover:text-zinc-400 transition-colors">Contact</a>
-        </div>
+        <a href="../index.html" class="back-link text-[10px] font-bold hover:text-zinc-400">← Back to Works</a>
     </nav>
 
-    <main class="px-8 max-w-5xl mx-auto py-12">
+    <main class="px-8 max-w-6xl mx-auto py-12">
+        
         <header class="mb-12">
-            <h1 class="text-5xl font-black italic tracking-tighter uppercase mb-4">Pigout</h1>
-            <p class="text-zinc-500 uppercase tracking-[0.3em] text-xs">3D Animation / Motion Design / 2026</p>
-        </header>
-
-        <section class="mb-16">
-            <div class="video-container bg-zinc-900 rounded-lg">
+            <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4">PIGOUT</h1>
+            <div class="flex gap-4 mb-8">
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">3D Motion Design</span>
+                <span class="px-3 py-1 border border-zinc-800 text-[10px] uppercase tracking-widest text-zinc-500">2026</span>
+            </div>
+            
+            <div class="video-wrapper shadow-[0_0_100px_rgba(0,0,0,0.8)]">
                 <iframe src="https://www.youtube.com/embed/你的视频ID" allowfullscreen></iframe>
             </div>
-        </section>
+            <p class="mt-4 text-[10px] text-zinc-600 uppercase tracking-[0.2em]">Project Showcase: 4K Render Output</p>
+        </header>
 
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-t border-zinc-900">
             <div class="md:col-span-2">
-                <h3 class="text-xl font-bold mb-4 uppercase">About the Project</h3>
-                <p class="text-zinc-400 leading-relaxed">
-                    在这里输入关于 Pigout 项目的详细描述。例如：设计理念、使用的软件（C4D, Octane, After Effects）以及你在这个项目中解决的视觉挑战。
+                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8">Project Narrative</h3>
+                <p class="text-zinc-200 leading-relaxed text-xl mb-6">
+                    "PIGOUT" 是一个关于视觉张力与物质消耗的探索项目。
+                    通过动态图形展示了从有序到混沌的转变。
+                </p>
+                <p class="text-zinc-500 leading-relaxed">
+                    在这个项目中，我专注于高精度建模和复杂的材质表现。
+                    所有的动态效果均通过 Houdini 模拟，并在 Redshift 中完成最终渲染，力求还原最真实的物理质感。
                 </p>
             </div>
-            <div class="space-y-6">
+            
+            <div class="space-y-10">
                 <div>
-                    <h4 class="text-xs font-bold uppercase text-zinc-500 mb-2">Software</h4>
-                    <p class="text-sm">Cinema 4D / Houdini / Redshift</p>
-                </div>
-                <div>
-                    <h4 class="text-xs font-bold uppercase text-zinc-500 mb-2">Role</h4>
-                    <p class="text-sm">3D Modeling, Lighting, Animation</p>
+                    <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-4">Core Competencies</h3>
+                    <ul class="text-sm space-y-2 text-zinc-400 font-mono">
+                        <li>Procedural Modeling</li>
+                        <li>Dynamic Simulation</li>
+                        <li>Look Development</li>
+                        <li>Redshift Rendering</li>
+                    </ul>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <footer class="border-t border-zinc-800 pt-8 mt-20 text-center">
-            <a href="../index.html" class="text-zinc-500 hover:text-white transition-colors uppercase text-xs tracking-widest">← Back to Works</a>
-        </footer>
+        <div class="bg-zinc-950 p-16 rounded-2xl text-center border border-zinc-900 mb-20">
+            <h2 class="text-3xl font-bold mb-10 italic uppercase tracking-tighter">View Full Project Gallery</h2>
+            <a href="https://www.behance.net" target="_blank"
+               class="inline-block px-10 py-4 bg-white/10 text-zinc-400 font-bold uppercase tracking-widest text-[10px] border border-zinc-800 hover:bg-white hover:text-black transition-all">
+                See Process on Behance
+            </a>
+        </div>
+
     </main>
+
+    <footer class="p-20 text-center border-t border-zinc-900">
+        <p class="text-zinc-800 text-[10px] uppercase tracking-widest">&copy; 2026 USHOO STUDIO</p>
+    </footer>
 
 </body>
 </html>
-
