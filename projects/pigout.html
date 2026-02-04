@@ -1,0 +1,62 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pigout | USHOO.ART</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    </style>
+</head>
+<body>
+
+    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
+        <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
+        <div class="space-x-8 text-[10px] font-bold">
+            <a href="../index.html#work" class="hover:text-zinc-400 transition-colors">Works</a>
+            <a href="../contact.html" class="hover:text-zinc-400 transition-colors">Contact</a>
+        </div>
+    </nav>
+
+    <main class="px-8 max-w-5xl mx-auto py-12">
+        <header class="mb-12">
+            <h1 class="text-5xl font-black italic tracking-tighter uppercase mb-4">Pigout</h1>
+            <p class="text-zinc-500 uppercase tracking-[0.3em] text-xs">3D Animation / Motion Design / 2026</p>
+        </header>
+
+        <section class="mb-16">
+            <div class="video-container bg-zinc-900 rounded-lg">
+                <iframe src="https://www.youtube.com/embed/你的视频ID" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            <div class="md:col-span-2">
+                <h3 class="text-xl font-bold mb-4 uppercase">About the Project</h3>
+                <p class="text-zinc-400 leading-relaxed">
+                    在这里输入关于 Pigout 项目的详细描述。例如：设计理念、使用的软件（C4D, Octane, After Effects）以及你在这个项目中解决的视觉挑战。
+                </p>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-xs font-bold uppercase text-zinc-500 mb-2">Software</h4>
+                    <p class="text-sm">Cinema 4D / Houdini / Redshift</p>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold uppercase text-zinc-500 mb-2">Role</h4>
+                    <p class="text-sm">3D Modeling, Lighting, Animation</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="border-t border-zinc-800 pt-8 mt-20 text-center">
+            <a href="../index.html" class="text-zinc-500 hover:text-white transition-colors uppercase text-xs tracking-widest">← Back to Works</a>
+        </footer>
+    </main>
+
+</body>
+</html>
+
