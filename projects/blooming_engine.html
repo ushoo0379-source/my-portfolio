@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Bloom - Critical Error</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { overflow: hidden; background: #050508; font-family: 'Courier New', monospace; }
+        canvas { display: block; width: 100%; height: 100vh; }
+        
+        #status {
+            position: fixed; top: 20px; right: 20px;
+            color: #00ffff; font-size: 14px; text-shadow: 0 0 5px #00ffff;
+            z-index: 100; background: rgba(10, 10, 21, 0.9);
+            padding: 15px 20px; border-radius: 8px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            opacity: 0; transition: all 0.3s;
+        }
+        #status.active { opacity: 1; border-color: #00ff00; box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); }
+        #status.danger { border-color: #ff0000; box-shadow: 0 0 30px rgba(255, 0, 0, 0.8); background: rgba(50, 0, 0, 0.9); }
+        
+        .t-value { color: #ff0080; font-weight: bold; font-size: 24px; }
+        #mode-indicator { margin-top: 5px; font-weight: bold; color: #ffff00; font-size: 16px; }
+        
+        #charge-bar-container {
+            width: 100%; height: 6px; background: #333; margin-top: 5px;
+            border-radius: 3px; overflow: hidden; display: none;
+        }
+        #charge-bar-fill {
+            height: 100%; width: 0%; background: #ff0080; transition: width 0.1s;
+        }
+
+        .interaction-guide {
+            position: fixed; bottom: 20px; left: 20px;
+            color: #00ffff; font-size: 13px; text-shadow: 0 0 5px #00ffff;
+            z-index: 100; background: rgba(10, 10, 21, 0.85);
+            padding: 15px 20px; border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.3); pointer-events: none;
+        }
+        .interaction-guide h3 { font-size: 16px; margin-bottom: 10px; color: #ff0080; letter-spacing: 2px; }
+
+        /* Glitch Effect Overlay */
+        #glitch-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: red; mix-blend-mode: overlay; opacity: 0; pointer-events: none;
+            z-index: 50; transition: opacity 0.1s;
+        }
+
+        #webcam-video {
+            position: fixed; top: 20px; left: 20px;
+            width: 160px; height: 120px;
+            border: 1px solid #00ffff; opacity: 0.6; 
+            z-index: 999; transform: scaleX(-1);
+            border-radius: 4px; display: none;
+        }
+        
+        #loading-ai {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ffff; font-size: 20px;
+            background: rgba(0,0,0,0.9); padding: 40px;
+            border: 2px solid #ff0080; border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 0, 128, 0.4);
+            z-index: 2000; text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="glitch-overlay"></div>
+    <video id="webcam-video" autoplay playsinline></video>
+    <div id="loading-ai">
+        🧬 LOADING SYSTEMS...<br>
+        <div style="margin-top:15px; font-size:14px; color:#aaa">Safety Protocols Active</div>
+    </div>
+
+    <div id="status">
+        🖐️ SYSTEMS ONLINE<br>
+        <div id="mode-indicator">WAITING...</div>
+        <div id="charge-bar-container"><div id="charge-bar-fill"></div></div>
+        <span class="t-value">BLOOM: <span id="t-value">0%</span></span>
+    </div>
+    
+    <div class="interaction-guide">
+        <h3>🧙‍♂️ TELEKINESIS FIELD</h3>
+        <p>🙅‍♂️ <b>CROSS ARMS</b> → ⚠️ SYSTEM FAILURE</p>
+        <p>👋 <b>WAVE HAND</b> → BEND TENDRILS</p>
+        <p>✊ <b>HOLD FIST</b> → IMPLOSION</p>
+        <p>🖐️ <b>RELEASE</b> → EXPLOSION</p>
+        <p>✌️ <b>VICTORY</b> → SWITCH THEME</p>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+                "@mediapipe/tasks-vision": "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { GlitchPass } from 'three/addons/postprocessing/GlitchPass.js'; // Import GlitchPass (optional but good) or simulate manually
+        import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
+
+        // UI
+        const statusDiv = document.getElementById('status');
+        const tValueSpan = document.getElementById('t-value');
+        const modeSpan = document.getElementById('mode-indicator');
+        const chargeBarContainer = document.getElementById('charge-bar-container');
+        const chargeBarFill = document.getElementById('charge-bar-fill');
+        const loadingDiv = document.getElementById('loading-ai');
+        const videoElement = document.getElementById('webcam-video');
+        const glitchOverlay = document.getElementById('glitch-overlay');
+
+        // AI & Gesture State
+        let handLandmarker = undefined;
+        let lastVideoTime = -1;
+        
+        let gestureState = {
+            isLoaded: false,
+            mode: 'IDLE',
+            targetX: 0, targetY: 0, currentX: 0, currentY: 0,
+            targetT: 0.5,
+            lastPinchX: 0, lastPinchY: 0, targetRotY: 0, targetRotX: 0,
+            flashlightTargetX: 0, flashlightTargetY: 0, flashlightCurrentX: 0, flashlightCurrentY: 0,
+            isFist: false, chargeStartTime: 0, isCharged: false, chargeProgress: 0,
+            lastColorSwitchTime: 0,
+            handWorldPos: new THREE.Vector3(0, -100, 0),
+            
+            // New States
+            isCrossed: false, // For "Pain" mode
+            painLevel: 0.0
+        };
+
+        let theatreMode = {
+            active: false, transition: 0.0,
+            originalAmbient: 1.5, targetAmbient: 0.05, 
+            originalBloom: 1.8, targetBloom: 0.2
+        };
+
+        async function setupVision() {
+            const visionGen = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm");
+            handLandmarker = await HandLandmarker.createFromOptions(visionGen, {
+                baseOptions: { modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`, delegate: "GPU" },
+                runningMode: "VIDEO", numHands: 2
+            });
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            videoElement.srcObject = stream;
+            videoElement.addEventListener("loadeddata", () => {
+                gestureState.isLoaded = true;
+                videoElement.style.display = "block";
+                loadingDiv.style.display = "none";
+            });
+        }
+        setupVision();
+
+        // ==========================================
+        // CONFIG & 4 PALETTES (Red Removed)
+        // ==========================================
+        let CONFIG = {
+            colors: {
+                primary: 0x66cc00, secondary: 0xccff00, tertiary: 0xffd700, 
+                accent: 0xffaa00, core: 0xffaa00, glow: 0xffaa00, background: 0x050508
+            },
+            layers: { petalLayers: 4, petalsPerLayer: [8, 12, 16, 20], baseRadius: 3.5, organicCount: 16, crystalCount: 12, membraneRes: 128 }
+        };
+        
+        const palettes = [
+            // 1. LIME STRIKE (Default)
+            { name: "LIME STRIKE",    p: 0x66cc00, s: 0xccff00, t: 0xffd700, g: 0xffaa00 },
+            // 2. ABYSS BLUE
+            { name: "ABYSS BLUE",     p: 0x3377ff, s: 0x00ffff, t: 0x0055ff, g: 0x00ffff },
+            // 3. GLITCH PINK
+            { name: "GLITCH PINK",    p: 0x6600cc, s: 0xff0099, t: 0x00ffff, g: 0xff00ff },
+            // 4. BLACK GOLD
+            { name: "BLACK GOLD",     p: 0x554433, s: 0xffd700, t: 0xffaa00, g: 0xffaa00 }
+        ];
+        let currentPaletteIndex = 0;
+
+        const petalLayerConfigs = [
+            { index: 0, scale: 1.0, targetScale: 1.0, baseScale: 1.0, breatheAmplitude: 0.05, baseDamping: 0.15 },
+            { index: 1, scale: 0.92, targetScale: 0.92, baseScale: 0.92, breatheAmplitude: 0.04, baseDamping: 0.15 },
+            { index: 2, scale: 0.85, targetScale: 0.85, baseScale: 0.85, breatheAmplitude: 0.03, baseDamping: 0.15 },
+            { index: 3, scale: 0.78, targetScale: 0.78, baseScale: 0.78, breatheAmplitude: 0.02, baseDamping: 0.15 }
+        ];
+
+        const membraneConfig = { scale: 1.0, targetScale: 1.0, baseScale: 1.0, damping: 0.12, breatheIntensity: 1.0, waveIntensity: 1.0, breathingAmplitude: 0.3 };
+        const interactionState = { t: 0.5, targetT: 0.5 };
+        function getNonLinearLayerRatio(layerIndex) {
+            const layerRatio = layerIndex / (petalLayerConfigs.length - 1);
+            return Math.pow(1 - layerRatio, 1.4);
+        }
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(CONFIG.colors.background);
+        scene.fog = new THREE.FogExp2(CONFIG.colors.background, 0.018);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 12, 20);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.3;
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.3;
+
+        const ambientLight = new THREE.AmbientLight(0x1a1a2e, 1.5); scene.add(ambientLight);
+        const keyLight = new THREE.DirectionalLight(CONFIG.colors.primary, 4); keyLight.position.set(8, 15, 8); scene.add(keyLight);
+        const fillLight = new THREE.PointLight(CONFIG.colors.secondary, 3); fillLight.position.set(-8, 8, -8); scene.add(fillLight);
+        const rimLight = new THREE.SpotLight(CONFIG.colors.tertiary, 6); rimLight.position.set(0, -8, 5); scene.add(rimLight);
+        const accentLight = new THREE.PointLight(CONFIG.colors.accent, 2); accentLight.position.set(0, -3, 0); scene.add(accentLight);
+        const mouseLight = new THREE.SpotLight(0xffffff, 0); mouseLight.distance = 60; mouseLight.angle = 0.08; mouseLight.penumbra = 0.5; mouseLight.decay = 1.5; mouseLight.position.set(0, 0, 15); scene.add(mouseLight);
+
+        // SHADERS
+        const liquidVertexShader = `
+            uniform float time;
+            uniform float spike; 
+            uniform vec3 uInteractPos;
+            uniform float uInteractStrength; 
+            varying vec2 vUv;
+            varying float vNoise;
+            varying vec3 vNormal;
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+            float snoise(vec3 v) {
+                const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+                const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+                vec3 i  = floor(v + dot(v, C.yyy));
+                vec3 x0 = v - i + dot(i, C.xxx);
+                vec3 g = step(x0.yzx, x0.xyz);
+                vec3 l = 1.0 - g;
+                vec3 i1 = min( g.xyz, l.zxy );
+                vec3 i2 = max( g.xyz, l.zxy );
+                vec3 x1 = x0 - i1 + C.xxx;
+                vec3 x2 = x0 - i2 + C.yyy;
+                vec3 x3 = x0 - D.yyy;
+                i = mod289(i);
+                vec4 p = permute( permute( permute( i.z + vec4(0.0, i1.z, i2.z, 1.0 )) + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+                float n_ = 0.142857142857;
+                vec3  ns = n_ * D.wyz - D.xzx;
+                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                vec4 x_ = floor(j * ns.z);
+                vec4 y_ = floor(j - 7.0 * x_ );
+                vec4 x = x_ *ns.x + ns.yyyy;
+                vec4 y = y_ *ns.x + ns.yyyy;
+                vec4 h = 1.0 - abs(x) - abs(y);
+                vec4 b0 = vec4( x.xy, y.xy );
+                vec4 b1 = vec4( x.zw, y.zw );
+                vec4 s0 = floor(b0)*2.0 + 1.0;
+                vec4 s1 = floor(b1)*2.0 + 1.0;
+                vec4 sh = -step(h, vec4(0.0));
+                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+                vec3 p0 = vec3(a0.xy,h.x);
+                vec3 p1 = vec3(a0.zw,h.y);
+                vec3 p2 = vec3(a1.xy,h.z);
+                vec3 p3 = vec3(a1.zw,h.w);
+                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                m = m * m;
+                return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
+            }
+            void main() {
+                vUv = uv; vNormal = normal;
+                float timeScale = 1.0 + spike * 4.0;
+                float noiseAmp = 0.15 + spike * 0.4; 
+                float n = snoise(vec3(position.x * 2.0, position.y * 2.0 + time * timeScale, position.z * 2.0));
+                vNoise = n;
+                vec3 pos = position + normal * n * noiseAmp;
+                float dist = distance(pos, uInteractPos);
+                float repelRadius = 4.0;
+                if (dist < repelRadius && uInteractStrength > 0.0) {
+                    float force = smoothstep(repelRadius, 0.0, dist) * uInteractStrength;
+                    vec3 pushDir = normalize(pos - uInteractPos);
+                    pos += pushDir * force * 0.3; 
+                }
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            }
+        `;
+
+        const liquidFragmentShader = `
+            uniform vec3 uBaseColor;
+            uniform vec3 uHighlightColor;
+            varying float vNoise;
+            varying vec3 vNormal;
+            void main() {
+                float intensity = smoothstep(-0.2, 0.6, vNoise);
+                vec3 finalColor = mix(uBaseColor, uHighlightColor, intensity);
+                vec3 viewDir = vec3(0.0, 0.0, 1.0);
+                float fresnel = pow(1.0 - dot(vNormal, viewDir), 3.0);
+                gl_FragColor = vec4(finalColor + fresnel * uHighlightColor * 0.5, 1.0);
+            }
+        `;
+
+        function registerMat(mat) { if (mat.emissiveIntensity !== undefined) mat.userData.originalEmissive = mat.emissiveIntensity; return mat; }
+        const materials = {
+            petalOuter: registerMat(new THREE.MeshPhysicalMaterial({ color: CONFIG.colors.primary, metalness: 0.2, roughness: 0.05, transmission: 0.7, thickness: 0.8, ior: 1.5, iridescence: 1.0, iridescenceIOR: 1.8, iridescenceThicknessRange: [100, 800], side: THREE.DoubleSide, transparent: true, opacity: 0.85 })),
+            petalMid: registerMat(new THREE.MeshPhysicalMaterial({ color: CONFIG.colors.secondary, metalness: 0.9, roughness: 0.1, clearcoat: 1.0, clearcoatRoughness: 0.1, sheen: 1.0, sheenColor: new THREE.Color(CONFIG.colors.glow), side: THREE.DoubleSide })),
+            petalInner: registerMat(new THREE.MeshPhysicalMaterial({ color: CONFIG.colors.tertiary, emissive: CONFIG.colors.tertiary, emissiveIntensity: 1.5, metalness: 0.6, roughness: 0.2, side: THREE.DoubleSide })),
+            petalCore: registerMat(new THREE.MeshPhysicalMaterial({ color: CONFIG.colors.glow, emissive: CONFIG.colors.glow, emissiveIntensity: 2.5, metalness: 0.8, roughness: 0.15, side: THREE.DoubleSide })),
+            petalCoreGlass: registerMat(new THREE.MeshPhysicalMaterial({ color: 0xaaffee, emissive: 0x4488cc, emissiveIntensity: 1.2, metalness: 0.1, roughness: 0.05, transmission: 0.85, thickness: 0.5, ior: 1.45, clearcoat: 1.0, clearcoatRoughness: 0.05, transparent: true, opacity: 0.7, side: THREE.DoubleSide })),
+            organic: registerMat(new THREE.MeshPhysicalMaterial({ color: 0xff3366, emissive: 0x440011, emissiveIntensity: 0.8, metalness: 0.7, roughness: 0.25, clearcoat: 1.0, clearcoatRoughness: 0.2 })),
+            crystal: registerMat(new THREE.MeshPhysicalMaterial({ color: CONFIG.colors.glow, emissive: CONFIG.colors.glow, emissiveIntensity: 3.0, metalness: 0.95, roughness: 0.05, transmission: 0.3, thickness: 0.5, transparent: true, opacity: 0.95 })),
+            burstParticle: registerMat(new THREE.MeshPhysicalMaterial({ color: 0xffdd00, emissive: 0xffdd00, emissiveIntensity: 5.0, metalness: 0.4, roughness: 0.15, transparent: true, opacity: 0.95 })), // LOCKED TO GOLD
+            membrane: registerMat(new THREE.MeshPhysicalMaterial({ color: 0xaaffff, metalness: 1.0, roughness: 0.05, clearcoat: 1.0, clearcoatRoughness: 0.05, side: THREE.DoubleSide, envMapIntensity: 2.0 })),
+            thornCore: registerMat(new THREE.MeshStandardMaterial({ color: CONFIG.colors.secondary, emissive: CONFIG.colors.tertiary, emissiveIntensity: 3.0, roughness: 0.2, metalness: 0.9 })),
+            thornShell: registerMat(new THREE.MeshPhysicalMaterial({ color: 0xccccff, metalness: 0.1, roughness: 0.0, transmission: 0.6, thickness: 0.2, transparent: true, opacity: 0.4, side: THREE.DoubleSide })),
+            liquidCore: new THREE.ShaderMaterial({ vertexShader: liquidVertexShader, fragmentShader: liquidFragmentShader, uniforms: { time: { value: 0 }, spike: { value: 0 }, uBaseColor: { value: new THREE.Color(0x050510) }, uHighlightColor: { value: new THREE.Color(CONFIG.colors.glow) }, uInteractPos: { value: new THREE.Vector3(0, -100, 0) }, uInteractStrength: { value: 0 } } }),
+            ambientDust: new THREE.PointsMaterial({ color: CONFIG.colors.glow, size: 0.08, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, sizeAttenuation: true })
+        };
+
+        function createParametricPetalBlade(length, width) {
+            const geometry = new THREE.BufferGeometry();
+            const segments = 32; const uSegments = segments, vSegments = Math.floor(segments / 2);
+            const vertices = [], normals = [], uvs = [], indices = [];
+            for (let i = 0; i <= uSegments; i++) {
+                const u = i / uSegments, taper = Math.pow(1 - u, 1.6), currentWidth = width * taper, y = u * length, twistAngle = u * Math.PI * 0.15;
+                for (let j = 0; j <= vSegments; j++) {
+                    const v = j / vSegments, vCentered = (v - 0.5) * 2;
+                    let x = vCentered * currentWidth;
+                    x += Math.sin(u * Math.PI * 3.0) * (0.08 * width * taper) * Math.abs(vCentered);
+                    const z = (1 - Math.abs(vCentered)) * taper * 0.06;
+                    const cosTheta = Math.cos(twistAngle), sinTheta = Math.sin(twistAngle);
+                    vertices.push(x * cosTheta - z * sinTheta, y, x * sinTheta + z * cosTheta);
+                    normals.push(0,0,1); uvs.push(v, u);
+                }
+            }
+            for (let i = 0; i < uSegments; i++) {
+                for (let j = 0; j < vSegments; j++) {
+                    const a = i * (vSegments + 1) + j, b = a + vSegments + 1;
+                    indices.push(a, b, a + 1, b, b + 1, a + 1);
+                }
+            }
+            const vc = vertices.length/3, bv=[], bn=[], bi=[];
+            for(let i=0;i<vertices.length;i+=3){ bv.push(vertices[i],vertices[i+1],-vertices[i+2]); bn.push(-normals[i],-normals[i+1],-normals[i+2]); }
+            for(let i=0;i<indices.length;i+=3){ bi.push(indices[i]+vc, indices[i+2]+vc, indices[i+1]+vc); }
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute([...vertices,...bv], 3));
+            geometry.setAttribute('normal', new THREE.Float32BufferAttribute([...normals,...bn], 3));
+            geometry.setAttribute('uv', new THREE.Float32BufferAttribute([...uvs,...uvs], 2));
+            geometry.setIndex([...indices,...bi]); geometry.computeVertexNormals(); geometry.translate(0, -length / 2, 0);
+            return geometry;
+        }
+        function createParametricPetal(l, w) {
+            const s = new THREE.Shape(); s.moveTo(0,0); s.quadraticCurveTo(w*0.5, l*0.5, 0, l); s.quadraticCurveTo(-w*0.5, l*0.5, 0, 0);
+            const g = new THREE.ExtrudeGeometry(s, {steps:2, depth:0.08, bevelEnabled:true, bevelThickness:0.03, bevelSize:0.02, bevelSegments:3});
+            g.center(); return g;
+        }
+        function addNoise(v, a) { return v + (Math.random()-0.5)*a; }
+
+        const flowerGroup = new THREE.Group(); scene.add(flowerGroup); mouseLight.target = flowerGroup;
+        
+        // LIQUID CORE
+        const coreGroup = new THREE.Group();
+        coreGroup.position.y = 0.5;
+        flowerGroup.add(coreGroup);
+        const liquidGeometry = new THREE.IcosahedronGeometry(0.7, 16); 
+        const liquidCoreMesh = new THREE.Mesh(liquidGeometry, materials.liquidCore);
+        coreGroup.add(liquidCoreMesh);
+        
+        // STAMENS
+        const stamenGroup = new THREE.Group(); stamenGroup.position.y = 0.5; flowerGroup.add(stamenGroup);
+        const stamens = []; 
+        const tentacleGeoBase = new THREE.CylinderGeometry(0.02, 0.05, 2.0, 8, 24); tentacleGeoBase.translate(0, 1.0, 0); 
+        const tendrilCount = 12; 
+        for (let i = 0; i < tendrilCount; i++) {
+            const angle = (Math.PI*2/tendrilCount)*i; const geo = tentacleGeoBase.clone();
+            const posAttribute = geo.attributes.position; const originalPositions = [];
+            for(let j=0; j<posAttribute.count; j++){ originalPositions.push(posAttribute.getX(j), posAttribute.getY(j), posAttribute.getZ(j)); }
+            const s = new THREE.Mesh(geo, materials.petalCore);
+            s.position.set(Math.sin(angle)*0.27, 0.2, Math.cos(angle)*0.27); 
+            s.userData = { angle: angle, phase: Math.random() * Math.PI * 2, speed: 2.0 + Math.random(), originalPos: originalPositions };
+            stamenGroup.add(s); stamens.push(s);
+        }
+        
+        const petalLayers = [];
+        for (let li = 0; li < 4; li++) {
+            const lg = new THREE.Group(); flowerGroup.add(lg);
+            const cfg = petalLayerConfigs[li]; const cnt = [8,12,16,20][li];
+            const rad = 3.5*(1.3-li*0.15); const len = 3.0-li*0.3; const wid = 1.5-li*0.15;
+            let geo = (li===0||li===3)?createParametricPetalBlade(len,wid):createParametricPetal(len,wid);
+            const mat = li===3?materials.petalCoreGlass:Object.values(materials)[li];
+            const pets = [];
+            for(let i=0; i<cnt; i++){
+                const m = new THREE.Mesh(geo, mat); const ang = (Math.PI*2/cnt)*i;
+                const r = addNoise(rad, 0.15);
+                m.position.set(Math.sin(ang)*r, -li*0.2, Math.cos(ang)*r);
+                m.lookAt(m.position.x*2, m.position.y-1, m.position.z*2); m.rotateX(Math.PI/2); m.rotateZ(addNoise(0,0.15));
+                const sc = 1.0-li*0.08; m.scale.set(sc,sc,sc);
+                m.userData = {layer:li, angle:ang, baseY:m.position.y, baseScale:sc, randomPhase:Math.random()};
+                lg.add(m); pets.push(m);
+            }
+            petalLayers.push({group:lg, config:cfg, petals:pets});
+        }
+        
+        const droplets = [], dropletsGroup = new THREE.Group(); flowerGroup.add(dropletsGroup);
+        const dropletsConfig = { scale: 1.0, targetScale: 1.0, baseScale: 1.0, damping: 0.1, breathingAmplitude: 0.35 };
+        
+        // --- IMPROVED THORN GEOMETRY (Thin & Sharp) ---
+        const thornCoreGeo = new THREE.CylinderGeometry(0, 0.02, 1.2, 6); // Pointy tip at top
+        thornCoreGeo.rotateX(-Math.PI / 2); // Point Z-forward
+        
+        const thornShellGeo = new THREE.CylinderGeometry(0, 0.04, 1.3, 6); 
+        thornShellGeo.rotateX(-Math.PI / 2);
+
+        for(let i=0; i<16; i++){
+            const ang = (Math.PI*2/16)*i; 
+            const thornContainer = new THREE.Group();
+            thornContainer.add(new THREE.Mesh(thornCoreGeo, materials.thornCore));
+            thornContainer.add(new THREE.Mesh(thornShellGeo, materials.thornShell));
+            
+            // Initial position (will be updated in animate loop)
+            const r = 1.8; 
+            thornContainer.position.set(Math.sin(ang)*r, 1.3, Math.cos(ang)*r);
+            thornContainer.lookAt(0, 0.5, 0); // Point to core
+
+            thornContainer.userData = { 
+                baseY: 1.3, 
+                angle: ang,
+                baseRadius: 1.8, // Store base radius for breathing animation
+                baseScale: 1.0,
+                physicsOffset: new THREE.Vector3(0,0,0) 
+            };
+            dropletsGroup.add(thornContainer); droplets.push(thornContainer);
+        }
+
+        const crystals = [], crystalGroup = new THREE.Group(); flowerGroup.add(crystalGroup);
+        const burstConfig = { isActive: false, strength: 8.0, damping: 0.94, returnForce: 0.015, gravity: 0.08, duration: 0 };
+        for(let i=0; i<12; i++){
+            const ang = (Math.PI*2/12)*i; const m = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), materials.burstParticle);
+            const op = new THREE.Vector3(Math.sin(ang)*1.2, 3.0, Math.cos(ang)*1.2);
+            m.position.copy(op); 
+            m.userData={angle:ang, originPos:op.clone(), baseY:3.0, spinSpeed:1.0, velocity:new THREE.Vector3(), baseScale:1.0, physicsOffset: new THREE.Vector3()};
+            crystalGroup.add(m); crystals.push(m);
+        }
+        
+        const torusGeo = new THREE.TorusGeometry(CONFIG.layers.baseRadius * 1.6, 0.15, 24, CONFIG.layers.membraneRes);
+        const membrane = new THREE.Mesh(torusGeo, materials.membrane);
+        membrane.rotation.x = Math.PI / 2;
+        membrane.userData = { originalPos: torusGeo.attributes.position.array.slice(), baseRot: membrane.rotation.clone() };
+        flowerGroup.add(membrane);
+
+        const dustCount = 300; 
+        const dustGeo = new THREE.BufferGeometry();
+        const dustPos = new Float32Array(dustCount * 3);
+        const dustVel = []; const dustBase = [];
+        for(let i=0; i<dustCount; i++) {
+            const x = (Math.random()-0.5) * 10;
+            const y = (Math.random()-0.5) * 6 + 1.5; 
+            const z = (Math.random()-0.5) * 6 + 2.0; 
+            dustPos[i*3] = x; dustPos[i*3+1] = y; dustPos[i*3+2] = z;
+            dustBase.push(new THREE.Vector3(x, y, z));
+            dustVel.push(new THREE.Vector3(0,0,0));
+        }
+        dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+        const dustSystem = new THREE.Points(dustGeo, materials.ambientDust);
+        flowerGroup.add(dustSystem);
+
+        const composer = new EffectComposer(renderer); composer.addPass(new RenderPass(scene, camera));
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.8, 0.6, 0.3);
+        composer.addPass(bloomPass);
+
+        function animateMembrane(time) {
+            const t = interactionState.t;
+            membraneConfig.scale += (membraneConfig.targetScale - membraneConfig.scale) * membraneConfig.damping;
+            const breathePulse = Math.sin(time * 1.4) * 0.01;
+            membrane.scale.setScalar(membraneConfig.scale + breathePulse);
+
+            const membraneWarp = Math.sin(time * 0.8 + t * 2.0) * 0.03;
+            const positionAttribute = membrane.geometry.attributes.position;
+            const originalPos = membrane.userData.originalPos;
+            const count = positionAttribute.count;
+            const waveIntensity = membraneConfig.waveIntensity;
+
+            const handPos = gestureState.handWorldPos;
+            const hasHand = gestureState.mode !== 'IDLE' && gestureState.mode !== 'DUAL_BLOOM';
+
+            for (let i = 0; i < count; i++) {
+                const i3 = i * 3;
+                const ox = originalPos[i3];
+                const oy = originalPos[i3 + 1];
+                const oz = originalPos[i3 + 2];
+                const angle = Math.atan2(oy, ox);
+                let wave1 = Math.sin(angle * 8 + time * 2.5 + t * 0.5) * (0.3 + membraneWarp) * waveIntensity;
+                let wave2 = Math.cos(angle * 12 - time * 1.75 - t * 0.3) * (0.15 + membraneWarp) * waveIntensity;
+                
+                if (hasHand) {
+                    const vPos = new THREE.Vector3(ox, oy, oz).applyMatrix4(membrane.matrixWorld);
+                    const dist = vPos.distanceTo(handPos);
+                    if (dist < 4.5) {
+                        wave1 += Math.sin(time * 20.0) * (4.5 - dist) * 0.15;
+                    }
+                }
+
+                positionAttribute.setZ(i, oz + wave1 + wave2);
+                const breathe = 1.0 + Math.sin(time * 1.5 + angle * 2) * 0.03 * membraneConfig.breatheIntensity;
+                const breatheWithT = breathe + t * 0.02;
+                positionAttribute.setX(i, ox * breatheWithT);
+                positionAttribute.setY(i, oy * breatheWithT);
+            }
+            positionAttribute.needsUpdate = true;
+            membrane.geometry.computeVertexNormals();
+        }
+
+        function triggerParticleBurst() {
+            burstConfig.isActive = true;
+            burstConfig.duration = 0;
+            crystals.forEach(c => {
+                const data = c.userData;
+                const spread = (Math.random()-0.5) * 2.0; 
+                data.velocity.set(spread, 0.8 + Math.random() * 0.5, spread).multiplyScalar(0.8);
+                c.scale.setScalar(data.baseScale * 2.0); 
+            });
+            for(let i=0; i<dustCount; i++) {
+                 dustVel[i].add(new THREE.Vector3((Math.random()-0.5), (Math.random()-0.5), (Math.random()-0.5)).multiplyScalar(0.5));
+            }
+        }
+
+        function switchColorPalette() {
+            currentPaletteIndex = (currentPaletteIndex + 1) % palettes.length;
+            const p = palettes[currentPaletteIndex];
+            keyLight.color.setHex(p.p); fillLight.color.setHex(p.s);
+            materials.petalOuter.color.setHex(p.p); materials.petalMid.color.setHex(p.s);
+            materials.petalInner.color.setHex(p.t); materials.petalInner.emissive.setHex(p.t);
+            materials.petalCore.color.setHex(p.g); materials.petalCore.emissive.setHex(p.g);
+            materials.thornCore.color.setHex(p.s); materials.thornCore.emissive.setHex(p.t);
+            materials.liquidCore.uniforms.uHighlightColor.value.setHex(p.g);
+            materials.ambientDust.color.setHex(p.g);
+            Object.values(materials).forEach(mat => { if (mat.emissiveIntensity !== undefined) mat.userData.originalEmissive = mat.emissiveIntensity; });
+        }
+
+        function updateTheatreMode() {
+            const target = theatreMode.active ? 1.0 : 0.0;
+            theatreMode.transition += (target - theatreMode.transition) * 0.1;
+            ambientLight.intensity = THREE.MathUtils.lerp(theatreMode.originalAmbient, theatreMode.targetAmbient, theatreMode.transition);
+            const dimFactor = 1.0 - (theatreMode.transition * 0.9);
+            keyLight.intensity = 4 * dimFactor; fillLight.intensity = 3 * dimFactor;
+            bloomPass.strength = THREE.MathUtils.lerp(theatreMode.originalBloom, theatreMode.targetBloom, theatreMode.transition);
+            Object.values(materials).forEach(mat => {
+                if (mat.userData.originalEmissive !== undefined) {
+                    const ct = theatreMode.active ? mat.userData.originalEmissive * 0.2 : mat.userData.originalEmissive;
+                    mat.emissiveIntensity += (ct - mat.emissiveIntensity) * 0.1;
+                }
+            });
+            mouseLight.intensity += ((theatreMode.active ? 200 : 0) - mouseLight.intensity) * 0.1;
+        }
+
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            let isPointing = false, isPinching = false, isFist = false, isVictory = false;
+            let isCrossed = false; // New Interaction State
+
+            if (gestureState.isLoaded && handLandmarker && videoElement.videoWidth > 0) {
+                if (videoElement.currentTime !== lastVideoTime) {
+                    const results = handLandmarker.detectForVideo(videoElement, performance.now());
+                    lastVideoTime = videoElement.currentTime;
+                    const hands = results.landmarks;
+
+                    if (hands.length === 0) {
+                        gestureState.handWorldPos.lerp(new THREE.Vector3(0, -100, 0), 0.1);
+                    } else if (hands.length === 2) {
+                        // --- PAIN/CROSS DETECTION ---
+                        const h1 = hands[0][0]; // Wrist 1
+                        const h2 = hands[1][0]; // Wrist 2
+                        
+                        // Distance check (normalized 0-1 coords)
+                        const dist = Math.sqrt(Math.pow(h1.x - h2.x, 2) + Math.pow(h1.y - h2.y, 2));
+                        
+                        // Check if wrists are close (crossed) and near center of chest (approx center of screen vertically)
+                        // x is mirrored, y is top-down (0 is top). Chest is roughly 0.5-0.8.
+                        const centerY = (h1.y + h2.y) / 2;
+                        
+                        // Thresholds: dist < 0.2 (close), centerY > 0.4 (not above head)
+                        if (dist < 0.2 && centerY > 0.4) {
+                            isCrossed = true;
+                        }
+                    }
+
+                    for (const hand of hands) {
+                        const wrist = hand[0];
+                        const tips = [hand[8], hand[12], hand[16], hand[20]]; 
+                        const mcps = [hand[5], hand[9], hand[13], hand[17]];
+                        const thumbTip = hand[4];
+                        const dist = (p1, p2) => Math.sqrt(Math.pow(p1.x-p2.x, 2) + Math.pow(p1.y-p2.y, 2));
+                        const palmSize = dist(wrist, mcps[1]); 
+
+                        const targetX = (0.5 - wrist.x) * 30; 
+                        const targetY = (0.5 - wrist.y) * 20; 
+                        const targetZ = 2.0; 
+                        gestureState.handWorldPos.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.3);
+
+                        let curledCount = 0;
+                        tips.forEach(t => { if(dist(t, wrist) < palmSize * 1.0) curledCount++; });
+                        if (curledCount >= 3) isFist = true;
+
+                        if (dist(tips[0], wrist) > palmSize * 1.5 && dist(tips[1], wrist) < palmSize * 1.2) {
+                            isPointing = true;
+                            gestureState.flashlightTargetX = (0.5 - tips[0].x) * 40;
+                            gestureState.flashlightTargetY = (0.5 - tips[0].y) * 30;
+                        }
+
+                        if (dist(thumbTip, tips[0]) < palmSize * 0.3 && !isFist) {
+                            isPinching = true;
+                            const px = (1-thumbTip.x); const py = thumbTip.y;
+                            if (gestureState.mode !== 'ROTATE') { gestureState.lastPinchX = px; gestureState.lastPinchY = py; }
+                            gestureState.targetRotY += (px - gestureState.lastPinchX) * 5.0;
+                            gestureState.targetRotX += (py - gestureState.lastPinchY) * 5.0;
+                            gestureState.lastPinchX = px; gestureState.lastPinchY = py;
+                        }
+                        
+                        if (dist(tips[0], wrist) > palmSize * 1.5 && dist(tips[1], wrist) > palmSize * 1.5 && dist(tips[3], wrist) < palmSize * 1.2) {
+                            isVictory = true;
+                        }
+                    }
+
+                    if (isFist) {
+                        if (!gestureState.isFist) gestureState.chargeStartTime = performance.now();
+                        gestureState.isFist = true;
+                        gestureState.chargeProgress = Math.min(1.0, (performance.now() - gestureState.chargeStartTime) / 2000);
+                        if (gestureState.chargeProgress >= 1.0) gestureState.isCharged = true;
+                    } else {
+                        if (gestureState.isFist && gestureState.isCharged) {
+                            triggerParticleBurst();
+                            gestureState.isCharged = false; gestureState.chargeProgress = 0;
+                        } else {
+                            gestureState.chargeProgress = Math.max(0, gestureState.chargeProgress - 0.05);
+                        }
+                        gestureState.isFist = false;
+                    }
+
+                    if (isVictory && (performance.now() - gestureState.lastColorSwitchTime > 1500)) {
+                        switchColorPalette(); gestureState.lastColorSwitchTime = performance.now();
+                    }
+
+                    // --- MODE SELECTOR ---
+                    if (isCrossed) {
+                        gestureState.mode = 'PAIN';
+                        gestureState.painLevel = Math.min(1.0, gestureState.painLevel + 0.1);
+                        statusDiv.classList.add('danger'); 
+                        modeSpan.innerText = "⚠️ CRITICAL FAILURE"; 
+                        modeSpan.style.color = "#ff0000";
+                    } else {
+                        gestureState.painLevel = Math.max(0.0, gestureState.painLevel - 0.05);
+                        statusDiv.classList.remove('danger');
+                        if (isPointing) {
+                            gestureState.mode = 'FLASHLIGHT';
+                            statusDiv.classList.add('active'); modeSpan.innerText = "🔦 FLASHLIGHT"; modeSpan.style.color = "#ffff00";
+                        } else if (isPinching) {
+                            gestureState.mode = 'ROTATE';
+                            statusDiv.classList.add('active'); modeSpan.innerText = "🔄 ROTATION LOCKED"; modeSpan.style.color = "#ff00ff";
+                        } else if (gestureState.chargeProgress > 0) {
+                            gestureState.mode = 'CHARGING';
+                            statusDiv.classList.add('active'); modeSpan.innerText = gestureState.isCharged ? "⚠️ OVERLOAD" : "✊ CHARGING...";
+                            modeSpan.style.color = gestureState.isCharged ? "#ff0000" : "#ff0080";
+                        } else if (hands.length === 2) {
+                            gestureState.mode = 'DUAL_BLOOM';
+                            statusDiv.classList.add('active'); modeSpan.innerText = "👐 ENERGY FIELD"; modeSpan.style.color = "#00ff00";
+                            const h1 = hands[0][0]; const h2 = hands[1][0];
+                            gestureState.targetX = (((1-h1.x)+(1-h2.x))/2 - 0.5) * 25;
+                            gestureState.targetY = (0.5 - (h1.y+h2.y)/2) * 20;
+                            const dist = Math.sqrt(Math.pow((1-h1.x)-(1-h2.x),2) + Math.pow(h1.y-h2.y,2));
+                            gestureState.targetT = Math.max(0, Math.min(1, (dist-0.1)/0.5));
+                            tValueSpan.innerHTML = `${Math.round(gestureState.targetT*100)}%`;
+                        } else {
+                            gestureState.mode = 'IDLE'; statusDiv.classList.remove('active');
+                            gestureState.targetX = 0; gestureState.targetY = 0;
+                        }
+                    }
+                }
+            }
+
+            chargeBarContainer.style.display = gestureState.chargeProgress > 0 ? 'block' : 'none';
+            chargeBarFill.style.width = (gestureState.chargeProgress * 100) + '%';
+            chargeBarFill.style.backgroundColor = gestureState.isCharged ? '#fff' : '#ff0080';
+
+            theatreMode.active = (gestureState.mode === 'FLASHLIGHT');
+            updateTheatreMode();
+
+            // --- PAIN / GLITCH VISUALS ---
+            const pain = gestureState.painLevel;
+            if (pain > 0.01) {
+                // 1. Screen Shake
+                camera.position.x += (Math.random() - 0.5) * pain * 0.5;
+                camera.position.y += (Math.random() - 0.5) * pain * 0.5;
+                
+                // 2. Bloom Explode
+                bloomPass.strength = 1.8 + pain * 3.0 + Math.random() * pain * 2.0;
+                bloomPass.radius = 0.6 + pain * 0.5;
+                
+                // 3. Wireframe Toggle
+                const wireframeOn = Math.random() < pain * 0.8; // Flicker wireframe
+                Object.values(materials).forEach(m => {
+                    if(m.wireframe !== undefined) m.wireframe = wireframeOn;
+                });
+
+                // 4. Implosion / Spasm (Shrink and Jitter)
+                flowerGroup.scale.setScalar(1.0 - pain * 0.4 + Math.sin(time * 50) * 0.05 * pain);
+                
+                // 5. Red Overlay
+                glitchOverlay.style.opacity = pain * 0.5 + (Math.random() * 0.2 * pain);
+            } else {
+                // Reset Values when pain is gone
+                flowerGroup.scale.lerp(new THREE.Vector3(1,1,1), 0.1);
+                glitchOverlay.style.opacity = 0;
+                Object.values(materials).forEach(m => { if(m.wireframe) m.wireframe = false; });
+            }
+
+            if (gestureState.mode !== 'FLASHLIGHT') {
+                gestureState.currentX += (gestureState.targetX - gestureState.currentX) * 0.08;
+                gestureState.currentY += (gestureState.targetY - gestureState.currentY) * 0.08;
+                flowerGroup.position.x = gestureState.currentX; flowerGroup.position.y = gestureState.currentY;
+            }
+            if (theatreMode.active) {
+                gestureState.flashlightCurrentX += (gestureState.flashlightTargetX - gestureState.flashlightCurrentX) * 0.15;
+                gestureState.flashlightCurrentY += (gestureState.flashlightTargetY - gestureState.flashlightCurrentY) * 0.15;
+                mouseLight.position.set(gestureState.flashlightCurrentX, gestureState.flashlightCurrentY, 15);
+            }
+
+            if (gestureState.mode === 'ROTATE') {
+                flowerGroup.rotation.y += (gestureState.targetRotY - flowerGroup.rotation.y) * 0.1;
+                flowerGroup.rotation.x += (gestureState.targetRotX - flowerGroup.rotation.x) * 0.1;
+            } else {
+                flowerGroup.rotation.y += 0.002; flowerGroup.rotation.x += (0 - flowerGroup.rotation.x) * 0.05;
+            }
+
+            if (gestureState.mode === 'DUAL_BLOOM') {
+                interactionState.t += (gestureState.targetT - interactionState.t) * 0.1;
+            }
+            
+            const t = interactionState.t;
+            
+            petalLayers.forEach((layerData, index) => {
+                const config = layerData.config;
+                const openFactor = Math.pow(t, 1.0 + index * 0.1); 
+                config.targetScale = 0.15 + (config.baseScale - 0.15) * openFactor;
+                
+                const effectiveDamping = config.baseDamping * (0.8 + getNonLinearLayerRatio(index) * 0.6);
+                config.scale += (config.targetScale - config.scale) * effectiveDamping;
+                layerData.group.scale.setScalar(config.scale);
+
+                const hasHand = gestureState.mode !== 'IDLE' && gestureState.mode !== 'DUAL_BLOOM' && gestureState.mode !== 'PAIN';
+                const handPos = gestureState.handWorldPos;
+
+                layerData.petals.forEach((petal) => {
+                    const data = petal.userData;
+                    let targetRotY = Math.sin(time * 2 + data.angle * 3) * 0.15;
+                    let targetRotX = 0; 
+                    if (hasHand) {
+                        const petalPos = new THREE.Vector3().setFromMatrixPosition(petal.matrixWorld);
+                        const dist = petalPos.distanceTo(handPos);
+                        if (dist < 4.5) {
+                            const force = (1.0 - dist / 4.5);
+                            targetRotX -= force * 0.5;
+                        }
+                    }
+                    petal.rotation.y = targetRotY;
+                    petal.rotation.x = THREE.MathUtils.lerp(petal.rotation.x, Math.PI/2 + targetRotX, 0.1);
+                    petal.scale.setScalar(data.baseScale + Math.sin(time * 1.5 + data.randomPhase) * config.breatheAmplitude);
+                    petal.position.y = data.baseY + Math.sin(time + data.randomPhase) * 0.08;
+                });
+            });
+
+            membraneConfig.targetScale = 0.2 + (membraneConfig.baseScale - 0.2) * t;
+            dropletsConfig.targetScale = t; 
+
+            // PHYSICS UPDATE
+            const hasHand = gestureState.mode !== 'IDLE' && gestureState.mode !== 'DUAL_BLOOM' && gestureState.mode !== 'PAIN';
+            const handPos = gestureState.handWorldPos;
+
+            const updateFloatingObjects = (objList) => {
+                objList.forEach(obj => {
+                    const data = obj.userData;
+                    if (burstConfig.isActive && objList === crystals) {
+                        burstConfig.duration++; if(burstConfig.duration > 180) burstConfig.isActive = false;
+                        data.velocity.y -= 0.015; data.velocity.multiplyScalar(0.96);
+                        obj.position.add(data.velocity); obj.rotation.x += 0.1; obj.scale.multiplyScalar(0.98);
+                    } else if (gestureState.chargeProgress > 0) {
+                        obj.position.lerp(new THREE.Vector3(0, 3, 0), 0.05 * gestureState.chargeProgress);
+                        obj.position.add(new THREE.Vector3((Math.random()-0.5)*0.1, (Math.random()-0.5)*0.1, (Math.random()-0.5)*0.1));
+                    } else if (gestureState.painLevel > 0) {
+                        // Jitter particles in pain mode
+                        obj.position.add(new THREE.Vector3((Math.random()-0.5)*0.1, (Math.random()-0.5)*0.1, (Math.random()-0.5)*0.1));
+                    } else {
+                        const idealY = data.baseY + Math.sin(time * (data.bobSpeed||1) + (data.angle||0)) * 0.2;
+                        const idealPos = data.originPos ? data.originPos.clone() : (data.basePos ? data.basePos.clone() : new THREE.Vector3());
+                        if(data.originPos) idealPos.y = idealY; 
+                        
+                        if (hasHand) {
+                            const dist = obj.position.distanceTo(handPos);
+                            if (dist < 6.0) { 
+                                const pushDir = obj.position.clone().sub(handPos).normalize();
+                                const force = (1.0 - dist / 6.0) * 0.4;
+                                data.physicsOffset.add(pushDir.multiplyScalar(force));
+                            }
+                        }
+                        
+                        data.physicsOffset.multiplyScalar(0.9);
+                        obj.position.copy(idealPos).add(data.physicsOffset);
+                        if (objList === crystals) obj.scale.setScalar(data.baseScale * (1.0 + Math.sin(time*3+data.angle)*0.15));
+                        
+                        // --- THORNS MOVEMENT LOGIC ---
+                        if (objList === droplets) {
+                            const bloomT = interactionState.t;
+                            const currentRadius = 1.0 + bloomT * 1.5; // Radius moves from 1.0 to 2.5
+                            const currentY = data.baseY + Math.sin(time * 2 + data.angle) * 0.1;
+                            obj.position.set(Math.sin(data.angle) * currentRadius, currentY, Math.cos(data.angle) * currentRadius);
+                            obj.lookAt(0, 0.5, 0); // Always point to core
+                            obj.scale.setScalar(0.5 + bloomT * 0.5); // Scale moves from 0.5 to 1.0
+                        }
+                    }
+                });
+            };
+            updateFloatingObjects(crystals);
+            updateFloatingObjects(droplets);
+
+            // ===============================================
+            // COMPACT FUNNEL
+            // ===============================================
+            stamens.forEach(s => {
+                const data = s.userData;
+                const positions = s.geometry.attributes.position;
+                const originalPos = data.originalPos; 
+                if (!originalPos) return;
+
+                const count = positions.count;
+                let pushVector = new THREE.Vector3(0,0,0);
+                if (hasHand) {
+                    const sPos = new THREE.Vector3().setFromMatrixPosition(s.matrixWorld);
+                    const dist = sPos.distanceTo(handPos);
+                    if (dist < 5.0) {
+                        const force = (1.0 - dist / 5.0);
+                        pushVector.copy(sPos).sub(handPos).normalize().multiplyScalar(force * 0.8);
+                    }
+                }
+
+                const dirX = Math.sin(data.angle);
+                const dirZ = Math.cos(data.angle);
+
+                for (let i = 0; i < count; i++) {
+                    const ix = i*3; const iy = i*3+1; const iz = i*3+2;
+                    const ox = originalPos[ix];
+                    const oy = originalPos[iy];
+                    const oz = originalPos[iz];
+                    
+                    const h = Math.max(0, (oy - 0.0) / 2.0); 
+
+                    const wiggleX = Math.sin(time * data.speed + oy * 2.0 + data.phase) * 0.1 * (h * h);
+                    const wiggleZ = Math.cos(time * data.speed * 0.8 + oy * 1.5) * 0.1 * (h * h);
+                    
+                    const bendX = pushVector.x * h * h; 
+                    const bendZ = pushVector.z * h * h;
+                    const bendY = -Math.abs(pushVector.length()) * 0.3 * h * h;
+
+                    const spreadAmount = 0.6 * (h * h); 
+                    const spreadX = dirX * spreadAmount;
+                    const spreadZ = dirZ * spreadAmount;
+
+                    positions.setXYZ(i, ox + wiggleX + bendX + spreadX, oy + bendY, oz + wiggleZ + bendZ + spreadZ);
+                }
+                positions.needsUpdate = true;
+                s.rotation.y = time * 0.1 + data.angle;
+            });
+            // ===============================================
+
+            const positions = dustSystem.geometry.attributes.position.array;
+            for(let i=0; i<dustCount; i++) {
+                const ix = i*3; const iy = i*3+1; const iz = i*3+2;
+                const p = new THREE.Vector3(positions[ix], positions[iy], positions[iz]);
+                const base = dustBase[i];
+                const vel = dustVel[i];
+
+                if (hasHand) {
+                    const dist = p.distanceTo(handPos);
+                    if (dist < 6.0) {
+                        const push = p.clone().sub(handPos).normalize().multiplyScalar((1.0 - dist/6.0) * 0.08); 
+                        vel.add(push);
+                    }
+                }
+                vel.multiplyScalar(0.96); 
+                const returnForce = base.clone().sub(p).multiplyScalar(0.015);
+                vel.add(returnForce);
+                vel.y += Math.sin(time + p.x) * 0.0005;
+
+                positions[ix] += vel.x;
+                positions[iy] += vel.y;
+                positions[iz] += vel.z;
+            }
+            dustSystem.geometry.attributes.position.needsUpdate = true;
+            
+            animateMembrane(time);
+            
+            if (materials.liquidCore) {
+                materials.liquidCore.uniforms.time.value = time;
+                const targetSpike = gestureState.chargeProgress > 0 ? 0.8 + gestureState.chargeProgress * 0.5 : 0.0;
+                materials.liquidCore.uniforms.spike.value += (targetSpike - materials.liquidCore.uniforms.spike.value) * 0.1;
+                if (hasHand) {
+                    materials.liquidCore.uniforms.uInteractPos.value.copy(handPos);
+                    materials.liquidCore.uniforms.uInteractStrength.value = 1.0; 
+                } else {
+                    materials.liquidCore.uniforms.uInteractStrength.value = 0.0;
+                }
+            }
+
+            controls.update();
+            if (mouseLight.intensity > 0) mouseLight.target.updateMatrixWorld();
+            composer.render();
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
