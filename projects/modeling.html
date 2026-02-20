@@ -16,6 +16,11 @@
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* Icons Styling */
+        .software-icons { display: flex; gap: 12px; margin-top: 12px; margin-bottom: 24px; align-items: center; }
+        .software-icons img { height: 18px; width: auto; filter: brightness(0) invert(1); opacity: 0.6; transition: all 0.3s ease; }
+        .software-icons img:hover { opacity: 1; transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -29,8 +34,6 @@
         
         <header class="mb-12">
             <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4 text-white">3D MODELING & TEXTURING</h1>
-
-            </div>
             
             <div class="video-wrapper shadow-[0_0_80px_rgba(0,0,0,0.5)]">
                 <iframe src="https://www.youtube.com/embed/zmKhW1T7b3A" allowfullscreen></iframe>
@@ -45,9 +48,8 @@
                 </p>
                 <p class="text-zinc-500 leading-relaxed font-light mb-6">
                     This project is a visual study in Digital Resurrection, exploring the deconstruction and restoration of historical artifacts within a modern procedural framework.
-The core of the study is a high-fidelity reconstruction of a Armor set, focusing on the "heavy industry" of 3D production: precise hard-surface modeling and hyper realistic PBR texturing. 
-To move beyond a static render, I utilized TouchDesigner to generate a dynamic point cloud system. This allows the model to emerge from raw data points into a tangible reality, visualizing a "digital resurrection" process. It is a technical experiment in merging traditional 3D craftsmanship with a modern VFX pipeline.
-
+                    The core of the study is a high-fidelity reconstruction of a Armor set, focusing on the "heavy industry" of 3D production: precise hard-surface modeling and hyper realistic PBR texturing. 
+                    To move beyond a static render, I utilized TouchDesigner to generate a dynamic point cloud system. This allows the model to emerge from raw data points into a tangible reality, visualizing a "digital resurrection" process. It is a technical experiment in merging traditional 3D craftsmanship with a modern VFX pipeline.
                 </p>
             </div>
             
@@ -57,6 +59,15 @@ To move beyond a static render, I utilized TouchDesigner to generate a dynamic p
                     <div>
                         <p class="text-[10px] uppercase tracking-widest text-zinc-600 mb-1">Software</p>
                         <p class="text-xs font-bold uppercase tracking-widest">Blender | Maya | ZBrush | SP | TD | AE</p>
+                        
+                        <div class="software-icons">
+                            <img src="../images/blender.svg" alt="Blender">
+                            <img src="../images/maya.svg" alt="Maya">
+                            <img src="../images/zbrush.svg" alt="ZBrush">
+                            <img src="../images/sp.svg" alt="Substance Painter">
+                            <img src="../images/td.svg" alt="TouchDesigner">
+                            <img src="../images/ae.svg" alt="After Effects">
+                        </div>
                     </div>
                     <div>
                         <p class="text-[10px] uppercase tracking-widest text-zinc-600 mb-1">Role</p>
