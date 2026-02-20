@@ -17,18 +17,32 @@
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
-        /* Icons Styling - Optimized for Solid Icons */
-        .software-icons { display: flex; gap: 16px; margin-top: 16px; margin-bottom: 24px; align-items: center; }
+        /* Icons Styling */
+        .software-icons { 
+            display: flex; 
+            gap: 16px; 
+            margin-top: 16px; 
+            margin-bottom: 24px; 
+            align-items: center; 
+            flex-wrap: wrap; /* 超出范围自动换行 */
+        }
+        
         .software-icons img { 
-            height: 36px; /* 尺寸放大一倍左右 */
+            height: 28px; /* 放大约 1.5 倍 */
             width: auto; 
-            filter: grayscale(1) brightness(1.5); /* 变成黑白并提亮，确保实心图标内部字母清晰 */
             opacity: 0.6; 
             transition: all 0.3s ease; 
         }
+
+        /* 镂空类图标：保持纯白反相 */
+        .icon-white { filter: brightness(0) invert(1); }
+
+        /* 实心类图标：使用灰度控制细节 */
+        .icon-solid { filter: grayscale(1) brightness(1.2); }
+
         .software-icons img:hover { 
             opacity: 1; 
-            filter: grayscale(0) brightness(1); /* 鼠标悬停恢复彩色/原貌 */
+            filter: none; /* 悬停恢复原始色彩 */
             transform: translateY(-2px); 
         }
     </style>
@@ -71,12 +85,12 @@
                         <p class="text-xs font-bold uppercase tracking-widest">Blender | Maya | ZBrush | SP | TD | AE</p>
                         
                         <div class="software-icons">
-                            <img src="../images/blender.svg" alt="Blender">
-                            <img src="../images/maya.svg" alt="Maya">
-                            <img src="../images/zbrush.svg" alt="ZBrush">
-                            <img src="../images/sp.svg" alt="Substance Painter">
-                            <img src="../images/td.svg" alt="TouchDesigner">
-                            <img src="../images/ae.svg" alt="After Effects">
+                            <img src="../images/blender.svg" class="icon-white" alt="Blender">
+                            <img src="../images/maya.svg" class="icon-white" alt="Maya">
+                            <img src="../images/zbrush.svg" class="icon-white" alt="ZBrush">
+                            <img src="../images/sp.svg" class="icon-solid" alt="Substance Painter">
+                            <img src="../images/td.svg" class="icon-white" alt="TouchDesigner">
+                            <img src="../images/ae.svg" class="icon-solid" alt="After Effects">
                         </div>
                     </div>
                     <div>
