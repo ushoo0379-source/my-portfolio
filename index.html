@@ -1,67 +1,116 @@
-<section id="work" class="px-0 pb-32">
-<h3 class="text-4xl font-black italic tracking-tighter uppercase mb-12 border-b border-zinc-900 pb-4">Selected Projects</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USHOO.ART | Digital Artist & Systems Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
+        .work-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .project-image-container { position: relative; width: 100%; height: 500px; overflow: hidden; background: #111; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+    </style>
+</head>
+<body>
 
-            <div class="flex flex-col gap-24">
-            <div class="flex flex-col gap-12">
+    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
+        <a href="index.html" class="text-2xl font-bold italic">USHOO.ART</a>
+        <div class="space-x-8 text-[10px] font-bold">
+            <a href="#work" class="hover:text-zinc-400">Works</a>
+            <a href="about.html" class="hover:text-zinc-400">About</a>
+        </div>
+    </nav>
 
-<a href="projects/recursion.html" class="work-card">
-<div class="project-image-container rounded-lg mb-6">
-<img src="images/recursion.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" alt="Recursion">
-</div>
-<div class="flex justify-between items-end">
-<div>
-                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">RECURSION</h4>
-                            <p class="text-zinc-500 text-sm mt-2">Environment Design | 2D & 3D Assist</p>
+    <main class="px-8 max-w-6xl mx-auto">
+        
+        <section class="py-32 border-b border-zinc-900 mb-24">
+            <h1 class="text-[12vw] font-black italic uppercase leading-[0.8] tracking-tighter">
+                Visual<br><span class="text-zinc-800">Systems</span>
+            </h1>
+            <p class="mt-8 text-zinc-500 uppercase tracking-[0.5em] text-xs">Digital Resurrection / 3D Modeling / Creative Coding</p>
+        </section>
+
+        <section id="work" class="px-0 pb-32">
+            <h3 class="text-4xl font-black italic tracking-tighter uppercase mb-12 border-b border-zinc-900 pb-4">Selected Projects</h3>
+
+            <div class="flex flex-col gap-32">
+                
+                <a href="projects/recursion.html" class="work-card group">
+                    <div class="project-image-container rounded-lg mb-6">
+                        <img src="images/recursion.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Recursion">
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
                             <h4 class="text-xl font-bold uppercase tracking-widest text-white">RECURSION</h4>
                             <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Environment Design | 2D & 3D Assist</p>
-</div>
-                        <span class="text-zinc-800 font-mono text-xs italic">Featured / Click to view</span>
+                        </div>
                         <span class="text-zinc-800 font-mono text-[10px] italic">Featured / Click to view</span>
-</div>
-</a>
+                    </div>
+                </a>
 
-@@ -78,8 +78,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">REC
-</div>
-<div class="flex justify-between items-end">
-<div>
-                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">3D Modeling & Texturing</h4>
-                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">Lighting Study | Octane & C4D</p>
+                <a href="projects/modeling.html" class="work-card group">
+                    <div class="project-image-container rounded-lg mb-6">
+                        <img src="images/modeling.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="3D Modeling">
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
                             <h4 class="text-xl font-bold uppercase tracking-widest text-white">3D Modeling & Texturing</h4>
                             <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Lighting Study | Octane & C4D</p>
-</div>
-</div>
-</a>
-@@ -90,8 +90,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">3D
-</div>
-<div class="flex justify-between items-end">
-<div>
-                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Bicycle Touring</h4>
-                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">2D Animation | 1:00 Minute Short</p>
+                        </div>
+                        <span class="text-zinc-800 font-mono text-[10px] italic">Technical / Click to view</span>
+                    </div>
+                </a>
+
+                <a href="projects/bicycle.html" class="work-card group">
+                    <div class="project-image-container rounded-lg mb-6">
+                        <img src="images/bicycle.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Bicycle Touring">
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
                             <h4 class="text-xl font-bold uppercase tracking-widest text-white">Bicycle Touring</h4>
                             <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">2D Animation | 1:00 Minute Short</p>
-</div>
-</div>
-</a>
-@@ -102,8 +102,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Bic
-</div>
-<div class="flex justify-between items-end">
-<div>
-                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Blooming Engine</h4>
-                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">Interactive Website | Creative Coding</p>
+                        </div>
+                        <span class="text-zinc-800 font-mono text-[10px] italic">Animation / Click to view</span>
+                    </div>
+                </a>
+
+                <a href="projects/blooming.html" class="work-card group">
+                    <div class="project-image-container rounded-lg mb-6">
+                        <img src="images/blooming.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Blooming Engine">
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
                             <h4 class="text-xl font-bold uppercase tracking-widest text-white">Blooming Engine</h4>
                             <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Interactive Website | Creative Coding</p>
-</div>
-</div>
-</a>
-@@ -114,8 +114,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Blo
-</div>
-<div class="flex justify-between items-end">
-<div>
-                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">PIG OUT</h4>
-                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">Character Animation / 2D Rigging</p>
+                        </div>
+                        <span class="text-zinc-800 font-mono text-[10px] italic">Interactive / Click to view</span>
+                    </div>
+                </a>
+
+                <a href="projects/pigout.html" class="work-card group">
+                    <div class="project-image-container rounded-lg mb-6">
+                        <img src="images/pigout.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="PIG OUT">
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <div>
                             <h4 class="text-xl font-bold uppercase tracking-widest text-white">PIG OUT</h4>
                             <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Character Animation / 2D Rigging</p>
-</div>
-</div>
-</a>
-    
+                        </div>
+                        <span class="text-zinc-800 font-mono text-[10px] italic">Animation / Click to view</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="p-20 text-center border-t border-zinc-900">
+        <p class="text-zinc-800 text-[10px] uppercase tracking-[0.5em] italic">&copy; 2026 USHOO.ART — Systems Design</p>
+    </footer>
+
+</body>
+</html>
