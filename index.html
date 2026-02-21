@@ -1,127 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D MODELING | USHOO.ART</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
-        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #141414; border-radius: 8px; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .back-link { transition: all 0.3s ease; }
-        .back-link:hover { transform: translateX(-5px); }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        .software-icons { display: flex; gap: 16px; margin-top: 16px; margin-bottom: 24px; align-items: center; flex-wrap: wrap; }
-        .software-icons img { height: 28px; width: auto; opacity: 0.6; transition: all 0.3s ease; }
-        .icon-white { filter: brightness(0) invert(1); }
-        .icon-solid { filter: grayscale(1) brightness(1.2); }
-        .software-icons img:hover { opacity: 1; filter: none; transform: translateY(-2px); }
-        @keyframes subtle-pulse { 0% { opacity: 0.4; } 50% { opacity: 0.7; } 100% { opacity: 0.4; } }
-        .animate-pulse-slow { animation: subtle-pulse 4s infinite ease-in-out; }
-    </style>
-</head>
-<body>
+<section id="work" class="px-0 pb-32">
+<h3 class="text-4xl font-black italic tracking-tighter uppercase mb-12 border-b border-zinc-900 pb-4">Selected Projects</h3>
 
-    <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 bg-[#0a0a0a]/90 backdrop-blur-sm z-50">
-        <a href="../index.html" class="text-2xl font-bold italic">USHOO.ART</a>
-        <a href="../index.html" class="text-[10px] font-bold hover:text-zinc-400 back-link">← Back to Works</a>
-    </nav>
+            <div class="flex flex-col gap-24">
+            <div class="flex flex-col gap-12">
 
-    <main class="px-8 max-w-6xl mx-auto py-12">
-        
-        <header class="mb-24">
-            <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-8 text-white">3D MODELING & TEXTURING</h1>
-            <div class="overflow-hidden rounded-lg shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-zinc-900">
-                <img src="../images/modeling.jpg" alt="Hero" class="w-full h-auto object-cover">
-            </div>
-        </header>
+<a href="projects/recursion.html" class="work-card">
+<div class="project-image-container rounded-lg mb-6">
+<img src="images/recursion.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" alt="Recursion">
+</div>
+<div class="flex justify-between items-end">
+<div>
+                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">RECURSION</h4>
+                            <p class="text-zinc-500 text-sm mt-2">Environment Design | 2D & 3D Assist</p>
+                            <h4 class="text-xl font-bold uppercase tracking-widest text-white">RECURSION</h4>
+                            <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Environment Design | 2D & 3D Assist</p>
+</div>
+                        <span class="text-zinc-800 font-mono text-xs italic">Featured / Click to view</span>
+                        <span class="text-zinc-800 font-mono text-[10px] italic">Featured / Click to view</span>
+</div>
+</a>
 
-        <section class="mb-32">
-            <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8 text-center">Technical Exhibition: 360° Material Study</h3>
-            <div class="video-wrapper shadow-[0_0_80px_rgba(0,0,0,0.5)]">
-                <iframe src="https://www.youtube.com/embed/zmKhW1T7b3A" allowfullscreen></iframe>
-            </div>
-        </section>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-24 border-t border-zinc-900">
-            <div class="md:col-span-2">
-                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8">Project Description: Digital Resurrection</h3>
-                <p class="text-zinc-200 leading-relaxed text-2xl mb-8 font-light italic">"Bridging the Gap Between Ancient Heritage and Generative Future."</p>
-                <p class="text-zinc-500 leading-relaxed font-light mb-6 text-lg">
-                    This project is a visual study in Digital Resurrection, exploring the deconstruction and restoration of historical artifacts within a modern procedural framework.
-                </p>
-            </div>
-            
-            <div class="bg-zinc-950/50 p-8 rounded-lg border border-zinc-900/50">
-                <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8">Project Details</h3>
-                <div class="space-y-8">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-zinc-600 mb-2">Software Stack</p>
-                        <div class="software-icons">
-                            <img src="../images/blender.svg" class="icon-white" alt="Blender">
-                            <img src="../images/maya.svg" class="icon-white" alt="Maya">
-                            <img src="../images/zbrush.svg" class="icon-white" alt="ZBrush">
-                            <img src="../images/sp.svg" class="icon-solid" alt="Substance">
-                            <img src="../images/ae.svg" class="icon-solid" alt="AE">
-                            <img src="../images/td.svg" class="icon-white" alt="TD">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <section class="flex flex-col md:flex-row gap-8 py-32 border-t border-zinc-900 items-stretch">
-            
-            <div class="md:w-[65%] relative bg-zinc-950 border border-zinc-900 rounded-sm shadow-2xl overflow-hidden flex items-center justify-center">
-                <img src="../images/frontal-render.png" alt="Final Render" 
-                     class="w-full h-auto object-contain p-4 transition-transform duration-700 hover:scale-[1.02]">
-                <div class="absolute bottom-4 right-4">
-                    <span class="text-[8px] font-mono text-zinc-500 uppercase tracking-[0.2em] bg-[#0a0a0a] px-2">Material_Manifest</span>
-                </div>
-            </div>
-
-            <div class="md:w-[35%] flex flex-col gap-8">
-                <div class="flex-[2] relative overflow-hidden rounded-sm border border-zinc-900/50 bg-zinc-950 flex items-center justify-center min-h-[300px]">
-                    <img src="../images/cloud_point.gif" alt="Point Cloud" 
-                         class="w-full h-full object-cover opacity-50 transition-opacity hover:opacity-100 duration-1000 animate-pulse-slow">
-                    <div class="absolute bottom-4 left-0 w-full text-center">
-                        <span class="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.2em]">Data_Deconstruction</span>
-                    </div>
-                </div>
-
-                <div class="flex-[1] bg-zinc-950/40 border border-zinc-900/50 rounded-sm p-4 flex flex-col justify-center">
-                    <div class="flex justify-around items-center">
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-zinc-800 overflow-hidden bg-black shadow-lg">
-                                <img src="../images/Gold.png" alt="Gold" class="w-full h-full object-cover">
-                            </div>
-                            <span class="text-[7px] font-mono text-zinc-600 uppercase tracking-tighter">Gold</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-zinc-800 overflow-hidden bg-black shadow-lg">
-                                <img src="../images/Iron.png" alt="Iron" class="w-full h-full object-cover">
-                            </div>
-                            <span class="text-[7px] font-mono text-zinc-600 uppercase tracking-tighter">Iron</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-zinc-800 overflow-hidden bg-black shadow-lg">
-                                <img src="../images/Leather.png" alt="Leather" class="w-full h-full object-cover">
-                            </div>
-                            <span class="text-[7px] font-mono text-zinc-600 uppercase tracking-tighter">Leather</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="p-20 text-center border-t border-zinc-900">
-        <p class="text-zinc-800 text-[10px] uppercase tracking-widest italic tracking-[0.5em]">&copy; 2026 USHOO.ART — Systems Design</p>
-    </footer>
-
-</body>
-</html>
+@@ -78,8 +78,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">REC
+</div>
+<div class="flex justify-between items-end">
+<div>
+                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">3D Modeling & Texturing</h4>
+                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">Lighting Study | Octane & C4D</p>
+                            <h4 class="text-xl font-bold uppercase tracking-widest text-white">3D Modeling & Texturing</h4>
+                            <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Lighting Study | Octane & C4D</p>
+</div>
+</div>
+</a>
+@@ -90,8 +90,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">3D
+</div>
+<div class="flex justify-between items-end">
+<div>
+                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Bicycle Touring</h4>
+                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">2D Animation | 1:00 Minute Short</p>
+                            <h4 class="text-xl font-bold uppercase tracking-widest text-white">Bicycle Touring</h4>
+                            <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">2D Animation | 1:00 Minute Short</p>
+</div>
+</div>
+</a>
+@@ -102,8 +102,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Bic
+</div>
+<div class="flex justify-between items-end">
+<div>
+                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Blooming Engine</h4>
+                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">Interactive Website | Creative Coding</p>
+                            <h4 class="text-xl font-bold uppercase tracking-widest text-white">Blooming Engine</h4>
+                            <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Interactive Website | Creative Coding</p>
+</div>
+</div>
+</a>
+@@ -114,8 +114,8 @@ <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">Blo
+</div>
+<div class="flex justify-between items-end">
+<div>
+                            <h4 class="text-3xl font-black italic uppercase tracking-tighter text-white">PIG OUT</h4>
+                            <p class="text-zinc-500 text-sm mt-2 uppercase tracking-widest">Character Animation / 2D Rigging</p>
+                            <h4 class="text-xl font-bold uppercase tracking-widest text-white">PIG OUT</h4>
+                            <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Character Animation / 2D Rigging</p>
+</div>
+</div>
+</a>
+    
