@@ -7,44 +7,49 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0a0a0a; color: #ffffff; font-family: system-ui, sans-serif; }
-        /* Adjusted padding-bottom for Shorts/Vertical content if needed, 
-            but kept 16:9 wrapper for consistent layout */
+        
+        /* 视频容器比例 */
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #141414; border-radius: 8px; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        
         .back-link { transition: all 0.3s ease; }
         .back-link:hover { transform: translateX(-5px); }
+        
+        /* 滚动条美化 */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
-        /* Icons Styling */
+        /* 图标样式 */
         .software-icons { 
             display: flex; 
             gap: 16px; 
             margin-top: 16px; 
             margin-bottom: 24px; 
             align-items: center; 
-            flex-wrap: wrap; /* 超出范围自动换行 */
+            flex-wrap: wrap; 
         }
-        
         .software-icons img { 
-            height: 28px; /* 放大约 1.5 倍 */
+            height: 28px; 
             width: auto; 
             opacity: 0.6; 
             transition: all 0.3s ease; 
         }
-
-        /* 镂空类图标：保持纯白反相 */
         .icon-white { filter: brightness(0) invert(1); }
-
-        /* 实心类图标：使用灰度控制细节 */
         .icon-solid { filter: grayscale(1) brightness(1.2); }
-
         .software-icons img:hover { 
             opacity: 1; 
-            filter: none; /* 悬停恢复原始色彩 */
+            filter: none; 
             transform: translateY(-2px); 
         }
+
+        /* 自定义动画：呼吸感微动 */
+        @keyframes subtle-pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.6; }
+        }
+        .animate-pulse-slow { animation: subtle-pulse 4s infinite ease-in-out; }
     </style>
 </head>
 <body>
@@ -56,34 +61,41 @@
 
     <main class="px-8 max-w-6xl mx-auto py-12">
         
-        <header class="mb-12">
-            <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-4 text-white">3D MODELING & TEXTURING</h1>
-            
-            <div class="video-wrapper shadow-[0_0_80px_rgba(0,0,0,0.5)]">
-                <iframe src="https://www.youtube.com/embed/zmKhW1T7b3A" allowfullscreen></iframe>
+        <header class="mb-24">
+            <h1 class="text-6xl font-black italic uppercase tracking-tighter mb-8 text-white">3D MODELING & TEXTURING</h1>
+            <div class="overflow-hidden rounded-lg shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-zinc-900">
+                <img src="../images/model.jpg" alt="AI Conceptual Image" class="w-full h-auto object-cover max-h-[90vh]">
             </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-20 border-t border-zinc-900">
+        <section class="mb-32">
+            <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8 text-center">Technical Exhibition: 360° Material Study</h3>
+            <div class="video-wrapper shadow-[0_0_80px_rgba(0,0,0,0.5)]">
+                <iframe src="https://www.youtube.com/embed/zmKhW1T7b3A" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 py-24 border-t border-zinc-900">
             <div class="md:col-span-2">
                 <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8">Project Description: Digital Resurrection</h3>
-                <p class="text-zinc-200 leading-relaxed text-xl mb-6 font-light italic">
+                <p class="text-zinc-200 leading-relaxed text-2xl mb-8 font-light italic">
                     "Bridging the Gap Between Ancient Heritage and Generative Future."
                 </p>
-                <p class="text-zinc-500 leading-relaxed font-light mb-6">
+                <p class="text-zinc-500 leading-relaxed font-light mb-6 text-lg">
                     This project is a visual study in Digital Resurrection, exploring the deconstruction and restoration of historical artifacts within a modern procedural framework.
-                    The core of the study is a high-fidelity reconstruction of a Armor set, focusing on the "heavy industry" of 3D production: precise hard-surface modeling and hyper realistic PBR texturing. 
-                    To move beyond a static render, I utilized TouchDesigner to generate a dynamic point cloud system. This allows the model to emerge from raw data points into a tangible reality, visualizing a "digital resurrection" process. It is a technical experiment in merging traditional 3D craftsmanship with a modern VFX pipeline.
+                    The core of the study is a high-fidelity reconstruction of an Armor set, focusing on the "heavy industry" of 3D production: precise hard-surface modeling and hyper realistic PBR texturing. 
+                </p>
+                <p class="text-zinc-600 leading-relaxed font-light">
+                    Utilizing TouchDesigner to generate a dynamic point cloud system, the model emerges from raw data points into a tangible reality. It is a technical experiment in merging traditional 3D craftsmanship with a modern VFX pipeline.
                 </p>
             </div>
             
-            <div>
+            <div class="bg-zinc-950/50 p-8 rounded-lg border border-zinc-900/50">
                 <h3 class="text-zinc-500 uppercase tracking-[0.3em] text-[10px] mb-8">Project Details</h3>
-                <div class="space-y-6">
+                <div class="space-y-8">
                     <div>
-                        <p class="text-[10px] uppercase tracking-widest text-zinc-600 mb-1">Software</p>
-                        <p class="text-xs font-bold uppercase tracking-widest">Blender | Maya | ZBrush | SP | TD | AE</p>
-                        
+                        <p class="text-[10px] uppercase tracking-widest text-zinc-600 mb-2">Software Stack</p>
+                        <p class="text-xs font-bold uppercase tracking-widest mb-4">Blender | Maya | ZBrush | SP | TD | AE</p>
                         <div class="software-icons">
                             <img src="../images/blender.svg" class="icon-white" alt="Blender">
                             <img src="../images/maya.svg" class="icon-white" alt="Maya">
@@ -94,12 +106,37 @@
                         </div>
                     </div>
                     <div>
-                        <p class="text-[10px] uppercase tracking-widest text-zinc-600 mb-1">Role</p>
-                        <p class="text-xs font-bold uppercase tracking-widest">Hard Surface Modeling & Technical Art</p>
+                        <p class="text-[10px] uppercase tracking-widest text-zinc-600 mb-1">Lead Role</p>
+                        <p class="text-sm font-bold uppercase tracking-widest text-zinc-300">Hard Surface Modeling & Technical Art</p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-6 py-24 border-t border-zinc-900 items-end">
+            
+            <div class="md:col-span-4">
+                <div class="relative group cursor-crosshair">
+                    <img src="../images/point-cloud.gif" alt="Digital Deconstruction" class="w-full h-auto rounded-sm opacity-50 hover:opacity-100 transition-all duration-1000 animate-pulse-slow">
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-white text-black text-[8px] px-2 py-1 font-mono font-bold uppercase">Deconstructed_Data</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-8">
+                <div class="relative group shadow-2xl overflow-hidden rounded-sm">
+                    <img src="../images/frontal-render.jpg" alt="Final Reconstruction" class="w-full h-auto transform group-hover:scale-105 transition-transform duration-[2s]">
+                    <div class="absolute top-4 right-4 text-right">
+                        <span class="bg-red-600 text-white text-[8px] px-2 py-1 font-mono font-bold uppercase">Final_Manifestation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-12 mt-12">
+                <p class="text-[10px] text-zinc-700 uppercase tracking-[1em] text-center">Synthesis of Data and Matter</p>
+            </div>
+        </section>
 
     </main>
 
