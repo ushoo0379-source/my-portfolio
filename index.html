@@ -9,7 +9,6 @@
     <style>
         body { background-color: #000; color: #ffffff; font-family: system-ui, sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* 1. 残念层：负责模糊曼荼罗、血液、星群 */
         #canvas-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -18,7 +17,6 @@
             background: black;
         }
 
-        /* 2. 高清层：专门放清晰的白色放射状文字 */
         #ui-canvas-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -26,7 +24,6 @@
             pointer-events: none;
         }
 
-        /* 3. 作品集内容层 */
         #portfolio-content {
             position: relative; z-index: 10; opacity: 0; transform: translateY(60px);
             transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -37,13 +34,24 @@
         body.unlocked #ui-canvas-container { opacity: 0; transition: opacity 0.5s; }
         body.unlocked { overflow-y: auto; }
 
-        .hero-title { mix-blend-difference: exclusion; }
+        .hero-title { mix-blend-difference: exclusion; font-size: 14vw; }
         .work-card { background: rgba(20, 20, 20, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.5s ease; }
         .work-card:hover { border-color: rgba(255, 255, 255, 0.4); transform: translateY(-5px); }
         .project-image-container { position: relative; width: 100%; height: 500px; overflow: hidden; background: #111; }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #141414; border-radius: 4px; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
         ::-webkit-scrollbar { width: 0; }
+
+        /* --- 手机端响应式样式修复 --- */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 22vw !important; } /* 手机端标题反向放大，增强冲击力 */
+            .project-image-container { height: 300px !important; } /* 缩短高度，防止竖屏占位太大 */
+            nav { padding: 1.5rem !important; }
+            .flex-col.gap-32 { gap: 5rem !important; } /* 缩小项目间距 */
+            section.mb-48 { margin-bottom: 6rem !important; }
+            h4 { font-size: 1.1rem !important; } /* 缩小项目标题字号 */
+            .text-zinc-500, .text-zinc-700, p { font-size: 8px !important; } /* 精细化小字 */
+        }
     </style>
 </head>
 <body>
@@ -62,10 +70,10 @@
 
         <main class="px-8 max-w-6xl mx-auto">
             <section class="h-screen flex flex-col items-center justify-center text-center">
-                <h1 class="hero-title text-[14vw] md:text-[12vw] font-black italic uppercase leading-[0.8] tracking-tighter">
+                <h1 class="hero-title font-black italic uppercase leading-[0.8] tracking-tighter">
                     Visual<br><span class="text-zinc-600">Systems</span>
                 </h1>
-                <p class="mt-12 text-zinc-500 uppercase tracking-[0.5em] text-[10px] md:text-xs bg-black/40 px-4 inline-block">2D & 3D ANIMATION | MOTION GRAPHICS DESIGNER | INTERACTIVE ARTIST</p>
+                <p class="mt-12 text-zinc-500 uppercase tracking-[0.5em] text-[10px] md:text-xs bg-black/40 px-4 inline-block">2D & 3D ANIMATION | MOTION GRAPHICS | INTERACTIVE ART</p>
             </section>
 
             <section class="mb-48 max-w-7xl mx-auto">
@@ -79,7 +87,6 @@
                 <h3 class="text-4xl font-black italic tracking-tighter uppercase mb-12 border-b border-zinc-900 pb-4">Selected Projects</h3>
                 
                 <div class="flex flex-col gap-32">
-                    
                     <a href="projects/recursion.html" class="work-card group block p-4 rounded-lg">
                         <div class="project-image-container rounded mb-6">
                             <img src="images/recursion.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Recursion">
@@ -89,7 +96,7 @@
                                 <h4 class="text-xl font-bold uppercase tracking-widest text-white">RECURSION</h4>
                                 <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Environment Design | 2D & 3D Assist</p>
                             </div>
-                            <span class="text-zinc-700 font-mono text-[10px] italic">Featured / Click to view</span>
+                            <span class="text-zinc-700 font-mono text-[10px] italic">Featured / View</span>
                         </div>
                     </a>
 
@@ -102,7 +109,7 @@
                                 <h4 class="text-xl font-bold uppercase tracking-widest text-white">3D Modeling & Texturing</h4>
                                 <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Lighting Study | Octane & C4D</p>
                             </div>
-                            <span class="text-zinc-700 font-mono text-[10px] italic">Technical / Click to view</span>
+                            <span class="text-zinc-700 font-mono text-[10px] italic">Technical / View</span>
                         </div>
                     </a>
 
@@ -113,9 +120,9 @@
                         <div class="flex justify-between items-end">
                             <div>
                                 <h4 class="text-xl font-bold uppercase tracking-widest text-white">Bicycle Touring</h4>
-                                <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">2D Animation | 1:00 Minute Short</p>
+                                <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">2D Animation | Short Film</p>
                             </div>
-                            <span class="text-zinc-700 font-mono text-[10px] italic">Animation / Click to view</span>
+                            <span class="text-zinc-700 font-mono text-[10px] italic">Animation / View</span>
                         </div>
                     </a>
 
@@ -126,39 +133,23 @@
                         <div class="flex justify-between items-end">
                             <div>
                                 <h4 class="text-xl font-bold uppercase tracking-widest text-white">Blooming Engine</h4>
-                                <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Interactive Website | Creative Coding</p>
+                                <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Interactive | Creative Coding</p>
                             </div>
-                            <span class="text-zinc-700 font-mono text-[10px] italic">Interactive / Click to view</span>
+                            <span class="text-zinc-700 font-mono text-[10px] italic">Interactive / View</span>
                         </div>
                     </a>
-
-                    <a href="projects/pigout.html" class="work-card group block p-4 rounded-lg">
-                        <div class="project-image-container rounded mb-6">
-                            <img src="images/pigout.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="PIG OUT">
-                        </div>
-                        <div class="flex justify-between items-end">
-                            <div>
-                                <h4 class="text-xl font-bold uppercase tracking-widest text-white">PIG OUT</h4>
-                                <p class="text-zinc-500 text-[10px] uppercase tracking-widest mt-1">Character Animation / 2D Rigging</p>
-                            </div>
-                            <span class="text-zinc-700 font-mono text-[10px] italic">Animation / Click to view</span>
-                        </div>
-                    </a>
-
                 </div>
             </section>
         </main>
-
-        <footer class="p-20 text-center border-t border-zinc-900">
-            <p class="text-zinc-800 text-[10px] uppercase tracking-[0.5em] italic">&copy; 2026 USHOO.ART — Systems Design</p>
-        </footer>
     </div>
 
 <script>
 let p5_bg, p5_ui;
 window.isUnlocked = false;
 
-// 背景层逻辑
+// 检查是否为手机端
+const getIsMobile = () => window.innerWidth < 768;
+
 const bg_sketch = (p) => {
     let mandalaImg, starImg, lineImg;
     let particles = [];
@@ -182,7 +173,6 @@ const bg_sketch = (p) => {
         p.background(0, 50);
         drawNerveLines(p, lineImg, imgReady);
         
-        // 血液粒子始终存在
         if (p.frameCount % 4 == 0) particles.push(new FleshDrop(p, -50));
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update();
@@ -190,27 +180,28 @@ const bg_sketch = (p) => {
             if (particles[i].lifespan < 0) particles.splice(i, 1);
         }
 
-        // 未解锁时的仪式感图形
         if (!window.isUnlocked) {
             p.push();
             p.translate(p.width/2, p.height/2);
             let breathe = 1 + p.sin(p.frameCount * 2) * 0.08;
-            if (imgReady.mandala) p.image(mandalaImg, 0, 0, 450 * breathe, 450 * breathe);
+            
+            // 手机端缩小曼荼罗尺寸
+            let mandalaSize = getIsMobile() ? p.width * 0.85 : 450;
+            if (imgReady.mandala) p.image(mandalaImg, 0, 0, mandalaSize * breathe, mandalaSize * breathe);
             
             p.rotate(p.frameCount * 0.35); 
             let totalStars = 15;
+            let starOrbit = getIsMobile() ? p.width * 0.45 : 230; // 缩小星群轨道
             for (let i = 0; i < totalStars; i++) {
                 let offset = i * 100;
                 p.push();
                 p.rotate(i * (360 / totalStars));
-                let floatX = (p.noise(p.frameCount * 0.01, offset) - 0.5) * 50;
-                let floatY = (p.noise(p.frameCount * 0.01, offset + 500) - 0.5) * 50;
-                p.translate(230 + floatX, floatY);
+                let floatX = (p.noise(p.frameCount * 0.01, offset) - 0.5) * (getIsMobile() ? 20 : 50);
+                let floatY = (p.noise(p.frameCount * 0.01, offset + 500) - 0.5) * (getIsMobile() ? 20 : 50);
+                p.translate(starOrbit + floatX, floatY);
                 p.rotate(p.frameCount * (0.3 + (i % 5) * 0.1));
-                let starBreathe = p.sin(p.frameCount * 2 + offset) * 0.2 + 1;
-                let baseSize = 25 + (i % 3) * 10;
-                let finalSize = baseSize * starBreathe;
-                if (imgReady.star) p.image(starImg, 0, 0, finalSize, finalSize);
+                let baseSize = getIsMobile() ? 15 : 25; // 手机星群变小
+                if (imgReady.star) p.image(starImg, 0, 0, baseSize, baseSize);
                 p.pop();
             }
             p.pop();
@@ -220,7 +211,8 @@ const bg_sketch = (p) => {
     p.mousePressed = () => {
         if (!window.isUnlocked) {
             let d = p.dist(p.mouseX, p.mouseY, p.width/2, p.height/2);
-            if (d < 250) {
+            let clickZone = getIsMobile() ? p.width * 0.4 : 250;
+            if (d < clickZone) {
                 window.isUnlocked = true;
                 document.body.classList.add('unlocked');
             }
@@ -229,7 +221,6 @@ const bg_sketch = (p) => {
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 };
 
-// UI层逻辑 (放射文字)
 const ui_sketch = (p) => {
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight).parent('ui-canvas-container');
@@ -241,19 +232,21 @@ const ui_sketch = (p) => {
         if (!window.isUnlocked) {
             p.push();
             p.translate(p.width/2, p.height/2);
-            let introText = "2D & 3D ANIMATION | MOTION GRAPHICS DESIGNER | INTERACTIVE ARTIST | TOUCHDESIGNER & CREATIVE CODING | ";
+            let introText = "2D & 3D ANIMATION | MOTION GRAPHICS | INTERACTIVE ART | CREATIVE CODING | ";
             let chars = introText.split("");
             let angleStep = 360 / chars.length;
             p.textAlign(p.CENTER, p.CENTER);
             p.textFont('Courier New');
             p.textStyle(p.BOLD);
-            p.textSize(14);
+            p.textSize(getIsMobile() ? 10 : 14); // 手机端文字变小
             p.fill(255);
             p.rotate(p.frameCount * -0.2); 
+            
+            let radius = getIsMobile() ? p.width * 0.46 : 310; // 手机端文字半径收缩
             for (let i = 0; i < chars.length; i++) {
                 p.push();
                 p.rotate(i * angleStep);
-                p.translate(0, -310);
+                p.translate(0, -radius);
                 p.text(chars[i], 0, 0);
                 p.pop();
             }
@@ -263,17 +256,16 @@ const ui_sketch = (p) => {
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 };
 
-// 辅助函数
 function drawNerveLines(p, img, ready) {
-    let spacing = 20; 
+    let spacing = getIsMobile() ? 15 : 20; 
     for (let x = 0; x <= p.width; x += spacing) {
-        let h = p.noise(p.frameCount * 0.02, x * 0.01) * 350;
+        let h = p.noise(p.frameCount * 0.02, x * 0.01) * (getIsMobile() ? 200 : 350);
         if (ready.line) {
             p.tint(255, 0, 0, window.isUnlocked ? 150 : 180);
-            p.image(img, x, 0, 15, h);
+            p.image(img, x, 0, getIsMobile() ? 8 : 15, h);
             if (!window.isUnlocked) {
                 p.push(); p.translate(x, p.height); p.scale(1, -1);
-                p.image(img, 0, 0, 15, h); p.pop();
+                p.image(img, 0, 0, getIsMobile() ? 8 : 15, h); p.pop();
             }
             p.noTint();
         }
@@ -285,7 +277,7 @@ class FleshDrop {
         this.p = p;
         this.pos = p.createVector(p.random(p.width), y);
         this.vel = p.createVector(0, p.random(4, 9));
-        this.size = p.random(20, 50);
+        this.size = getIsMobile() ? p.random(10, 25) : p.random(20, 50); // 手机血液变小
         this.lifespan = 255;
     }
     update() { this.pos.add(this.vel); this.lifespan -= 2; }
