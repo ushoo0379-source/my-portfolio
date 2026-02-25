@@ -158,6 +158,7 @@
 let p5_bg, p5_ui;
 window.isUnlocked = false;
 
+// 背景层逻辑
 const bg_sketch = (p) => {
     let mandalaImg, starImg, lineImg;
     let particles = [];
@@ -180,6 +181,8 @@ const bg_sketch = (p) => {
     p.draw = () => {
         p.background(0, 50);
         drawNerveLines(p, lineImg, imgReady);
+        
+        // 血液粒子始终存在
         if (p.frameCount % 4 == 0) particles.push(new FleshDrop(p, -50));
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update();
@@ -187,11 +190,13 @@ const bg_sketch = (p) => {
             if (particles[i].lifespan < 0) particles.splice(i, 1);
         }
 
+        // 未解锁时的仪式感图形
         if (!window.isUnlocked) {
             p.push();
             p.translate(p.width/2, p.height/2);
             let breathe = 1 + p.sin(p.frameCount * 2) * 0.08;
             if (imgReady.mandala) p.image(mandalaImg, 0, 0, 450 * breathe, 450 * breathe);
+            
             p.rotate(p.frameCount * 0.35); 
             let totalStars = 15;
             for (let i = 0; i < totalStars; i++) {
@@ -224,6 +229,7 @@ const bg_sketch = (p) => {
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 };
 
+// UI层逻辑 (放射文字)
 const ui_sketch = (p) => {
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight).parent('ui-canvas-container');
@@ -257,6 +263,7 @@ const ui_sketch = (p) => {
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 };
 
+// 辅助函数
 function drawNerveLines(p, img, ready) {
     let spacing = 20; 
     for (let x = 0; x <= p.width; x += spacing) {
