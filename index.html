@@ -52,7 +52,7 @@
     <div id="ui-canvas-container"></div>
 
     <div id="portfolio-content">
-        <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 z-50 bg-black/50 backdrop-blur-sm">
+        <nav class="p-8 flex justify-between items-center uppercase tracking-widest sticky top-0 z-50">
             <a href="#" onclick="location.reload()" class="text-2xl font-bold italic">USHOO.ART</a>
             <div class="space-x-8 text-[10px] font-bold">
                 <a href="#work" class="hover:text-zinc-400">Works</a>
@@ -158,7 +158,6 @@
 let p5_bg, p5_ui;
 window.isUnlocked = false;
 
-// --- 背景层：残念滤镜下的生物质感 ---
 const bg_sketch = (p) => {
     let mandalaImg, starImg, lineImg;
     let particles = [];
@@ -180,10 +179,7 @@ const bg_sketch = (p) => {
 
     p.draw = () => {
         p.background(0, 50);
-        
         drawNerveLines(p, lineImg, imgReady);
-
-        // 血液粒子逻辑 (始终运行)
         if (p.frameCount % 4 == 0) particles.push(new FleshDrop(p, -50));
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update();
@@ -196,8 +192,6 @@ const bg_sketch = (p) => {
             p.translate(p.width/2, p.height/2);
             let breathe = 1 + p.sin(p.frameCount * 2) * 0.08;
             if (imgReady.mandala) p.image(mandalaImg, 0, 0, 450 * breathe, 450 * breathe);
-            
-            // 星群顺时针旋转 + Perlin Noise 漂浮
             p.rotate(p.frameCount * 0.35); 
             let totalStars = 15;
             for (let i = 0; i < totalStars; i++) {
@@ -230,7 +224,6 @@ const bg_sketch = (p) => {
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 };
 
-// --- 高清层：白色放射状文字 (逆时针旋转) ---
 const ui_sketch = (p) => {
     p.setup = () => {
         p.createCanvas(p.windowWidth, p.windowHeight).parent('ui-canvas-container');
@@ -250,7 +243,7 @@ const ui_sketch = (p) => {
             p.textStyle(p.BOLD);
             p.textSize(14);
             p.fill(255);
-            p.rotate(p.frameCount * -0.2); // 逆时针旋转
+            p.rotate(p.frameCount * -0.2); 
             for (let i = 0; i < chars.length; i++) {
                 p.push();
                 p.rotate(i * angleStep);
@@ -269,7 +262,6 @@ function drawNerveLines(p, img, ready) {
     for (let x = 0; x <= p.width; x += spacing) {
         let h = p.noise(p.frameCount * 0.02, x * 0.01) * 350;
         if (ready.line) {
-            // 解锁后稍微变暗一点点，增加对比度
             p.tint(255, 0, 0, window.isUnlocked ? 150 : 180);
             p.image(img, x, 0, 15, h);
             if (!window.isUnlocked) {
