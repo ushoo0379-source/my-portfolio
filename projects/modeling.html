@@ -22,10 +22,13 @@
         @keyframes subtle-pulse { 0% { opacity: 0.4; } 50% { opacity: 0.7; } 100% { opacity: 0.4; } }
         .animate-pulse-slow { animation: subtle-pulse 4s infinite ease-in-out; }
         
-        /* New Layering Styles */
-        .exhibition-container { position: relative; width: 100%; min-height: 80vh; display: flex; align-items: center; justify-content: center; }
-        .material-ball { width: 75px; height: 75px; } /* 1.3x increase from original approx 56px */
-        @media (max-width: 768px) { .material-ball { width: 55px; height: 55px; } }
+        /* Layout Tuning */
+        .exhibition-viewport { position: relative; width: 100%; display: flex; align-items: center; justify-content: center; padding: 4rem 0; }
+        .material-ball { width: 100px; height: 100px; } 
+        @media (max-width: 768px) { 
+            .material-ball { width: 70px; height: 70px; } 
+            .mobile-overlay-shift { top: 10% !important; right: 5% !important; width: 200px !important; height: 200px !important; }
+        }
     </style>
 </head>
 <body>
@@ -78,44 +81,44 @@
             </div>
         </div>
 
-        <section class="py-32 border-t border-zinc-900 relative">
-            <div class="exhibition-container">
+        <section class="py-32 border-t border-zinc-900">
+            <div class="exhibition-viewport">
                 
-                <div class="relative z-10 w-full max-w-4xl">
+                <div class="relative z-10 w-full max-w-5xl">
                     <img src="../images/frontal-render.png" alt="Final Render" 
-                         class="w-full h-auto object-contain transition-transform duration-700 hover:scale-[1.02]">
+                         class="w-full h-auto object-contain transition-transform duration-1000">
                 </div>
 
-                <div class="absolute top-0 right-0 w-64 md:w-80 h-64 md:h-80 z-20 overflow-hidden rounded-sm border border-zinc-800 bg-black/20 backdrop-blur-sm animate-pulse-slow">
-                    <img src="../images/cloud_point.gif" alt="Point Cloud" class="w-full h-full object-cover opacity-60 hover:opacity-100 duration-1000">
-                    <div class="absolute bottom-2 w-full text-center">
-                        <span class="text-[7px] font-mono text-zinc-500 uppercase tracking-[0.2em]">Data_Deconstruction</span>
+                <div class="mobile-overlay-shift absolute top-[-5%] right-0 w-80 md:w-[400px] h-80 md:h-[400px] z-30 overflow-hidden rounded-full border border-white/10 bg-black/40 backdrop-blur-md shadow-[0_0_50px_rgba(0,0,0,0.8)] animate-pulse-slow">
+                    <img src="../images/cloud_point.gif" alt="Point Cloud" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-700">
+                    <div class="absolute bottom-8 w-full text-center">
+                        <span class="text-[8px] font-mono text-white/40 uppercase tracking-[0.4em]">Scan_Data_01</span>
                     </div>
                 </div>
 
-                <div class="absolute bottom-10 left-0 z-30 flex flex-col gap-6 bg-zinc-900/10 p-6 rounded-lg backdrop-blur-md border border-white/5">
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="material-ball rounded-full border border-zinc-700 overflow-hidden bg-black shadow-2xl">
+                <div class="absolute bottom-10 left-4 md:left-20 z-40 flex flex-col gap-10 bg-white/5 p-8 rounded-2xl backdrop-blur-xl border border-white/10 shadow-2xl">
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="material-ball rounded-full border-2 border-zinc-700 overflow-hidden bg-black shadow-[0_0_30px_rgba(0,0,0,1)]">
                             <img src="../images/Gold.png" alt="Gold" class="w-full h-full object-cover">
                         </div>
-                        <span class="text-[8px] font-mono text-zinc-500 uppercase">Gold</span>
+                        <span class="text-[9px] font-mono text-zinc-400 uppercase tracking-widest">Aurum</span>
                     </div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="material-ball rounded-full border border-zinc-700 overflow-hidden bg-black shadow-2xl">
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="material-ball rounded-full border-2 border-zinc-700 overflow-hidden bg-black shadow-[0_0_30px_rgba(0,0,0,1)]">
                             <img src="../images/Iron.png" alt="Iron" class="w-full h-full object-cover">
                         </div>
-                        <span class="text-[8px] font-mono text-zinc-500 uppercase">Iron</span>
+                        <span class="text-[9px] font-mono text-zinc-400 uppercase tracking-widest">Ferrum</span>
                     </div>
-                    <div class="flex flex-col items-center gap-2">
-                        <div class="material-ball rounded-full border border-zinc-700 overflow-hidden bg-black shadow-2xl">
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="material-ball rounded-full border-2 border-zinc-700 overflow-hidden bg-black shadow-[0_0_30px_rgba(0,0,0,1)]">
                             <img src="../images/Leather.png" alt="Leather" class="w-full h-full object-cover">
                         </div>
-                        <span class="text-[8px] font-mono text-zinc-500 uppercase">Leather</span>
+                        <span class="text-[9px] font-mono text-zinc-400 uppercase tracking-widest">Cortex</span>
                     </div>
                 </div>
 
-                <div class="absolute bottom-0 right-0 z-20">
-                     <span class="text-[9px] font-mono text-zinc-700 uppercase tracking-[0.4em] border-r border-zinc-800 pr-4">Material_Manifest_v.02</span>
+                <div class="absolute top-1/2 left-0 -rotate-90 origin-left z-0">
+                    <span class="text-[10px] font-mono text-zinc-800 uppercase tracking-[1em] opacity-30">USHOO_SYSTEMS_R_04</span>
                 </div>
 
             </div>
