@@ -21,6 +21,11 @@
         .software-icons img:hover { opacity: 1; filter: none; transform: translateY(-2px); }
         @keyframes subtle-pulse { 0% { opacity: 0.4; } 50% { opacity: 0.7; } 100% { opacity: 0.4; } }
         .animate-pulse-slow { animation: subtle-pulse 4s infinite ease-in-out; }
+        
+        /* New Layering Styles */
+        .exhibition-container { position: relative; width: 100%; min-height: 80vh; display: flex; align-items: center; justify-content: center; }
+        .material-ball { width: 75px; height: 75px; } /* 1.3x increase from original approx 56px */
+        @media (max-width: 768px) { .material-ball { width: 55px; height: 55px; } }
     </style>
 </head>
 <body>
@@ -52,9 +57,6 @@
                 <p class="text-zinc-200 leading-relaxed text-2xl mb-8 font-light italic">"Bridging the Gap Between Ancient Heritage and Generative Future."</p>
                 <p class="text-zinc-500 leading-relaxed font-light mb-6 text-lg">
                     This project is a visual study in Digital Resurrection, exploring the deconstruction and restoration of historical artifacts within a modern procedural framework.
-The core of the study is a high-fidelity reconstruction of a Armor set, focusing on the "heavy industry" of 3D production: precise hard-surface modeling and hyper realistic PBR texturing. 
-To move beyond a static render, I utilized TouchDesigner to generate a dynamic point cloud system. This allows the model to emerge from raw data points into a tangible reality, visualizing a "digital resurrection" process. It is a technical experiment in merging traditional 3D craftsmanship with a modern VFX pipeline.
-
                 </p>
             </div>
             
@@ -76,50 +78,47 @@ To move beyond a static render, I utilized TouchDesigner to generate a dynamic p
             </div>
         </div>
 
-        <section class="flex flex-col md:flex-row gap-8 py-32 border-t border-zinc-900 items-stretch">
-            
-            <div class="md:w-[65%] relative bg-zinc-950 border border-zinc-900/50 rounded-sm shadow-2xl overflow-hidden flex items-center justify-center">
-                <img src="../images/frontal-render.png" alt="Final Render" 
-                     class="w-full h-auto object-contain p-4 transition-transform duration-700 hover:scale-[1.02]">
-                <div class="absolute bottom-4 right-4">
-                    <span class="text-[8px] font-mono text-zinc-500 uppercase tracking-[0.2em] bg-[#0a0a0a] px-2">Material_Manifest</span>
-                </div>
-            </div>
-
-            <div class="md:w-[35%] flex flex-col gap-8">
+        <section class="py-32 border-t border-zinc-900 relative">
+            <div class="exhibition-container">
                 
-                <div class="flex-[2] relative overflow-hidden rounded-sm border border-zinc-900/50 bg-zinc-950 flex items-center justify-center">
-                    <img src="../images/cloud_point.gif" alt="Point Cloud" 
-                         class="w-full h-full object-cover opacity-50 transition-opacity hover:opacity-100 duration-1000 animate-pulse-slow">
-                    <div class="absolute bottom-4 left-0 w-full text-center">
-                        <span class="text-[8px] font-mono text-zinc-600 uppercase tracking-[0.2em]">Data_Deconstruction</span>
+                <div class="relative z-10 w-full max-w-4xl">
+                    <img src="../images/frontal-render.png" alt="Final Render" 
+                         class="w-full h-auto object-contain transition-transform duration-700 hover:scale-[1.02]">
+                </div>
+
+                <div class="absolute top-0 right-0 w-64 md:w-80 h-64 md:h-80 z-20 overflow-hidden rounded-sm border border-zinc-800 bg-black/20 backdrop-blur-sm animate-pulse-slow">
+                    <img src="../images/cloud_point.gif" alt="Point Cloud" class="w-full h-full object-cover opacity-60 hover:opacity-100 duration-1000">
+                    <div class="absolute bottom-2 w-full text-center">
+                        <span class="text-[7px] font-mono text-zinc-500 uppercase tracking-[0.2em]">Data_Deconstruction</span>
                     </div>
                 </div>
 
-                <div class="flex-[1] bg-zinc-950/40 border border-zinc-900/50 rounded-sm p-4 flex flex-col justify-center">
-                    <div class="flex justify-around items-center">
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-zinc-800 overflow-hidden bg-black shadow-lg">
-                                <img src="../images/Gold.png" alt="Gold" class="w-full h-full object-cover">
-                            </div>
-                            <span class="text-[7px] font-mono text-zinc-600 uppercase">Gold</span>
+                <div class="absolute bottom-10 left-0 z-30 flex flex-col gap-6 bg-zinc-900/10 p-6 rounded-lg backdrop-blur-md border border-white/5">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="material-ball rounded-full border border-zinc-700 overflow-hidden bg-black shadow-2xl">
+                            <img src="../images/Gold.png" alt="Gold" class="w-full h-full object-cover">
                         </div>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-zinc-800 overflow-hidden bg-black shadow-lg">
-                                <img src="../images/Iron.png" alt="Iron" class="w-full h-full object-cover">
-                            </div>
-                            <span class="text-[7px] font-mono text-zinc-600 uppercase">Iron</span>
+                        <span class="text-[8px] font-mono text-zinc-500 uppercase">Gold</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="material-ball rounded-full border border-zinc-700 overflow-hidden bg-black shadow-2xl">
+                            <img src="../images/Iron.png" alt="Iron" class="w-full h-full object-cover">
                         </div>
-                        <div class="flex flex-col items-center gap-2">
-                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full border border-zinc-800 overflow-hidden bg-black shadow-lg">
-                                <img src="../images/Leather.png" alt="Leather" class="w-full h-full object-cover">
-                            </div>
-                            <span class="text-[7px] font-mono text-zinc-600 uppercase">Leather</span>
+                        <span class="text-[8px] font-mono text-zinc-500 uppercase">Iron</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="material-ball rounded-full border border-zinc-700 overflow-hidden bg-black shadow-2xl">
+                            <img src="../images/Leather.png" alt="Leather" class="w-full h-full object-cover">
                         </div>
+                        <span class="text-[8px] font-mono text-zinc-500 uppercase">Leather</span>
                     </div>
                 </div>
+
+                <div class="absolute bottom-0 right-0 z-20">
+                     <span class="text-[9px] font-mono text-zinc-700 uppercase tracking-[0.4em] border-r border-zinc-800 pr-4">Material_Manifest_v.02</span>
+                </div>
+
             </div>
-
         </section>
 
     </main>
